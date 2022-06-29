@@ -1,7 +1,153 @@
+import { useState, useEffect } from "react";
+
 function Footer() {
+
+  var [articles, setArticles] = useState({articles:[]});
+  
+  useEffect(
+    () => {
+        const f = async () => {
+            const data = await fetch(`/getFooterArticles`)
+            console.log('a',data)
+            const jsonData = await data.json()
+            console.log('b', jsonData)
+            console.log('c', articles)
+            setArticles(jsonData)
+            console.log('d', jsonData)
+        }
+        f();
+    }, {array:[]})
+
+
+    articles.articles.forEach(article =>{
+
+      let postDateRaw = article.date.split('T');
+      let postDateParsed = postDateRaw[0].split('-');
+      let postYear = postDateParsed[0]
+      let postMonth = postDateParsed[1]
+      let postDate = postDateParsed[2]
+    
+
+      article.dateComplete = `${postMonth}/${postDate}/${postYear} `
+
+      article.link = `/articles/${article.id}`
+    })
+
     return (
       <footer className="bg-blue-500 text-center rounded-t">
-        &#xa9; Copyright Madrasah Jamaliyah | Vancouver
+        <div class="text-sm row text-center mx-auto mb-0 md:flex">
+        <div class="text-center md:w-1/3 p-7">
+            <h2 className="text-3xl font-bold">Class Times</h2>
+            <table className="mx-auto text-sm text-left text-gray-800 dark:text-gray-900">
+                <tr class="row">
+                    <td class="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Tilawat ud Dua
+                    </td>
+                    <td>
+                        09:30am - 10:0am
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 1
+                    </td>
+                    <td>
+                        10:00am - 10:30am
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 2
+                    </td>
+                    <td>
+                        10:30am - 11:00am
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 3
+                    </td>
+                    <td>
+                        11:15am - 11:30am
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Break
+                    </td>
+                    <td>
+                        11:30am - 11:45am
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 4
+                    </td>
+                    <td>
+                        11:45am - 12:15pm
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 5
+                    </td>
+                    <td>
+                        12:15pm - 12:45pm
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Block 6
+                    </td>
+                    <td>
+                        12:45pm - 1:30pm
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Namaaz/Lunch
+                    </td>
+                    <td>
+                        1:30pm - 2:30pm
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        Tarbiyat Barnamaj
+                    </td>
+                    <td>
+                        2:30pm - 3:00pm
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="text-center  md:w-1/3 p-7">
+            <h2 className="text-3xl font-bold">Latest News</h2>
+              {articles.articles.slice(0,5).map(article => {
+                return(<p className="py-1"><i>{article.dateComplete}</i> - <a href={article.link} className='text-slate-700'>{article.title}</a></p>)
+              })}
+                   <br />
+                <a href="/articles" class="bg-transparent mx-1 hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded">Read News</a>
+            <br />
+        </div>
+        <div class="text-center md:w-1/3 p-7">
+            <h2 className="text-3xl font-bold">Contact Us</h2>
+            <address>
+                15 84 Ave<br />
+                Surrey, B.C.<br />
+                V3W 4G3, Canada<br /><br />
+                <a href="tel:7782312152" class="bg-transparent  mx-1 hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded">Call</a> | <a href="mailto:shabz2002786@gmail.com" class="bg-transparent  mx-1 hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded">Email</a><br />
+            </address>
+        </div>
+    </div>
+    <br />
+    <div class="mt-0">
+        <div>
+            <p>
+        &#xa9; Copyright Madrasah Jamaliyah | Vancouver</p>
+        </div>
+     
+    </div>
       </footer>
     );
   }

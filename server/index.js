@@ -68,8 +68,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+app.get('/getFooterArticles', (req, res) => {
 
-//figure out path to zoom 
+        let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`;
+        pool.query(getFooterArticlesQuery, (error, articles) => {
+            if (error) {
+                console.log(error);
+                res.send("Error " + error);
+            } else {
+                res.json({ articles: articles.rows })
+            }
+        })
+
+    })
+    //figure out path to zoom 
 app.get('/', (req, res) => {
     if (req.session.user === undefined) {
         req.session.user = null;

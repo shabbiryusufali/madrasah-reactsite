@@ -1,7 +1,8 @@
 function Dashboard() {
     return (
       <div className="App">
-        Dashboard
+      <br />
+      <h1 className="text-center text-6xl">Dashboard</h1>
       </div>
     );
   }

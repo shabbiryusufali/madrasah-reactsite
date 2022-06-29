@@ -1,7 +1,9 @@
 function SignUp() {
     return (
       <div className="App">
-        SignUp
+      <br />
+      <h1 className="text-center text-6xl">Sign Up</h1>
+        
       </div>
     );
   }

@@ -1,7 +1,9 @@
 function Information() {
     return (
       <div className="App">
-        Information
+        
+    <br />
+    <h1 className="text-center text-6xl">Information</h1>
       </div>
     );
   }

@@ -1,7 +1,9 @@
 function Library() {
   return (
     <div className="App">
-      Library
+      
+    <br />
+    <h1 className="text-center text-6xl">Library</h1>
     </div>
   );
 }
