@@ -9,24 +9,14 @@ router.get('/', (req, res) => {
     if (req.session.user === undefined) {
         req.session.user = null;
     }
-    let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 4`;
-    pool.query(getFooterArticlesQuery, (error, articles) => {
+
+    let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC`;
+    pool.query(getArticlesQuery, (error, result) => {
         if (error) {
             console.log(error);
             res.send("Error " + error);
         } else {
-            let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC`;
-            pool.query(getArticlesQuery, (error, result) => {
-                if (error) {
-                    console.log(error);
-                    res.send("Error " + error);
-                } else {
-                    let articlesToSend = { array: [result.rows] }
-                    res.json({ array: result.rows })
-                        //res.append('redirecturl', '/articles');
-                        //res.render('pages/articles/blogs.ejs', { pageTitle: "homepage", user: req.session.user, articles: result.rows, footerArticles: articles.rows });
-                }
-            })
+            res.json({ array: result.rows })
         }
     })
 })
@@ -122,28 +112,21 @@ router.get('/:id', (req, res) => {
     if (req.session.user === undefined) {
         req.session.user = null;
     }
-    var getFooterArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 3`;
-    pool.query(getFooterArticleQuery, (error, articles) => {
+
+    var ID = req.params.id;
+    var getArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} where id ='${ID}'`;
+    pool.query(getArticleQuery, (error, result) => {
         if (error) {
             res.send(error);
         } else {
-            var ID = req.params.id;
-            var getArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} where id ='${ID}'`;
-            pool.query(getArticleQuery, (error, result) => {
-                if (error) {
-                    res.send(error);
-                } else {
-                    var article = result.rows[0];
-                    if (article === undefined) {
-                        article = null;
-                    }
-                    //res.append('redirecturl', '/articles/show');
-                    res.json(article)
-                        //res.render('pages/articles/show.ejs', { pageTitle: "articles", user: req.session.user, article: article, footerArticles: articles.rows });
-                }
-            })
+            var article = result.rows[0];
+            if (article === undefined) {
+                article = null;
+            }
+            res.json(article)
         }
     })
+
 })
 
 // deleting a specific article
@@ -154,7 +137,8 @@ router.delete('/:id', (req, res) => {
         if (error) {
             res.send(error);
         } else {
-            res.redirect('/articles');
+            console.log('Post', ID, 'was deleted')
+            res.redirect('/');
         }
     })
 })

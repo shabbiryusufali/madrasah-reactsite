@@ -12,6 +12,7 @@ function Blog() {
             console.log('b', jsonData)
             console.log('c', posts)
             setPosts(jsonData)
+            .then(window.location.reload())
             console.log('d', jsonData)
         }
         f();
@@ -45,6 +46,7 @@ function Blog() {
           <tr>
             <th scope="col" className="px-6 py-3">Post Name</th>
             <th scope="col" className="px-6 py-3">Post Description</th>
+            <th scope="col" className="px-6 py-3">Post Author</th>
             <th scope="col" className="px-6 py-3">Post Date</th>
             <th scope="col" className="px-6 py-3"></th>
           </tr>
@@ -53,10 +55,11 @@ function Blog() {
       {posts.array.map(article => {
         return(
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <th scope='row' className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+          <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
           {article.title}
           </th>
           <td className="px-6 py-4">{article.description}</td>
+          <td className="px-6 py-4">{article.author}</td>
           <td className="px-6 py-4">{article.dateComplete}</td>
           <td className="text-gray-500 px-6 py-4"><a href={article.link} key={article.id} >Read More</a></td>
         </tr>)

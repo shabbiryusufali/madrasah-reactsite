@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
 
 function BlogPost() {
   let { id } = useParams();
   var [post, setPost] = useState({ title: "", description: "", markdown: "", date: "", id: Number, author: "" });
-
+  let deleteButton = `/articleFunctions/${id}`
   useEffect(
     () => {
       const f = async () => {
@@ -61,7 +62,7 @@ function BlogPost() {
     postMonth = "Undefined Date"
   }
 
-
+  let navigate = useNavigate();
 
 
 
@@ -69,14 +70,20 @@ function BlogPost() {
     <div className="App">
       <br />
       <h1 className="text-center text-6xl">Blog Post</h1>
+      <button onClick={async () => {await fetch(deleteButton, {method:'DELETE'}).then(navigate('/'))}} className='bg-transparent  mx-1 hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>DELETE</button>
+      
       <div className="bg-white rounded p-3 m-5">
+        
         <h2 className="text-start text-4xl">{post.title}</h2>
         <h3 className="text-start text-2xl">{post.description}</h3>
         <h4 className="text-start text-md">Posted By {post.author} on {postMonth} {postDate}, {postYear}</h4>
         <br />
         <p className="text-start text-lg ">{post.markdown}</p>
+        
       </div>
+
     </div>
+    
   );
 }
 

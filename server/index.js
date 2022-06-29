@@ -70,41 +70,18 @@ app.set('view engine', 'html');
 
 app.get('/getFooterArticles', (req, res) => {
 
-        let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`;
-        pool.query(getFooterArticlesQuery, (error, articles) => {
-            if (error) {
-                console.log(error);
-                res.send("Error " + error);
-            } else {
-                res.json({ articles: articles.rows })
-            }
-        })
-
-    })
-    //figure out path to zoom 
-app.get('/', (req, res) => {
-    if (req.session.user === undefined) {
-        req.session.user = null;
-    }
-    let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 4`;
-    pool.query(getArticlesQuery, (error, result) => {
+    let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`;
+    pool.query(getFooterArticlesQuery, (error, articles) => {
         if (error) {
             console.log(error);
             res.send("Error " + error);
         } else {
-            let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`;
-            pool.query(getFooterArticlesQuery, (error, articles) => {
-                if (error) {
-                    console.log(error);
-                    res.send("Error " + error);
-                } else {
-                    res.render('pages/index.ejs', { pageTitle: "homepage", user: req.session.user, articles: result.rows, footerArticles: articles.rows })
-                }
-            })
+            res.json({ articles: articles.rows })
         }
     })
 
 })
+
 
 
 app.post('/deleteUser/:ID', (req, res) => {

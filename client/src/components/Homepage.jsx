@@ -6,7 +6,7 @@ function Homepage() {
 
   useEffect(
     () => {
-      const f = async () => {
+        const f = async () => {
         const data = await fetch(`/articleFunctions`)
         console.log('a', data)
         const jsonData = await data.json()
@@ -42,7 +42,7 @@ function Homepage() {
       <br />
       <div className="md:flex">
         <div className="m-5 md:w-1/2">
-          <iframe src="https://calendar.google.com/calendar/embed?src=3r7s64pmr43cskec7m475vp7lo%40group.calendar.google.com&ctz=America%2FVancouver" width='100%' height="600" frameborder="0" scrolling="no"></iframe>
+          <iframe src="https://calendar.google.com/calendar/embed?src=3r7s64pmr43cskec7m475vp7lo%40group.calendar.google.com&ctz=America%2FVancouver" width='100%' className="rounded" height="600" frameborder="0" scrolling="no"></iframe>
           <br />
           <br />
         </div>
