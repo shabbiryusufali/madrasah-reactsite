@@ -12,6 +12,7 @@ const databaseRouter = require('./routes/database')
 const viewUserRouter = require('./routes/viewUser')
 const libraryRouter = require('./routes/library')
 const nodemailer = require('nodemailer');
+var cors = require('cors');
 
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(session({
 
 }));
 
+app.use(cors())
 
 app.use(function(req, res, next) {
     res.locals.user = req.session.user;
@@ -46,13 +48,7 @@ app.use(function(req, res, next) {
 //unknown functionality --> security -->>relaxes secirtuy need research?
 //“CORS” stands for Cross-Origin Resource Sharing. It allows you to make requests from one website to another website in the browser, which is normally prohibited by another browser policy called the Same-Origin Policy (SOP)
 //why can my test run without cors on local because same orgin if im testing serve then not 
-
-
-
-// can make a sperate js file and link it with require similar to pool and db file
-const { google } = require("googleapis");
-
-
+app.use(cors())
 
 
 //nesccary for req.body seriliization, big time waste to troubleshoot
@@ -61,9 +57,6 @@ app.use(express.urlencoded({ extended: true }))
 
 //adddeed slash to fix
 app.use(express.static(path.join(__dirname, '/public')))
-
-// app.set('views', path.join(__dirname, 'views'))
-// app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -440,95 +433,95 @@ app.post('/changePassword', (req, res) => {
 })
 
 app.post('/editMailingList', (req, res) => {
-    try {
-        let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-        pool.query(getArticlesQuery, (error, articles) => {
-            if (error) {
-                console.log(error);
-                res.send("Error " + error);
-            } else {
-                var idToChange = req.session.user.id;
-                var mailinglist = req.body.mailinglist;
-                var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET mailinglist = ${mailinglist} WHERE id=${idToChange};`;
-                console.log(req.session.user.pass);
-                if (req.session.user) {
-                    pool.query(changePassQuery);
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
-
+        try {
+            let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+            pool.query(getArticlesQuery, (error, articles) => {
+                if (error) {
+                    console.log(error);
+                    res.send("Error " + error);
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown", footerArticles: articles.rows })
+                    var idToChange = req.session.user.id;
+                    var mailinglist = req.body.mailinglist;
+                    var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET mailinglist = ${mailinglist} WHERE id=${idToChange};`;
+                    console.log(req.session.user.pass);
+                    if (req.session.user) {
+                        pool.query(changePassQuery);
+                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+
+                    } else {
+                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown", footerArticles: articles.rows })
+                    }
                 }
-            }
-        })
+            })
 
 
 
-    } catch (err) {
-        console.log(err);
-        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
-    }
-
-})
-app.get('/login', (req, res) => {
-    let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-    pool.query(getArticlesQuery, (error, articles) => {
-        if (error) {
-            console.log(error);
-            res.send("Error " + error);
-        } else {
-            if (req.session.user) {
-                res.render('pages/login.ejs', { pageTitle: "login", user: req.session.user, action: null, footerArticles: articles.rows })
-            } else {
-                res.render('pages/login.ejs', { pageTitle: "login", user: null, action: null, footerArticles: articles.rows })
-            }
+        } catch (err) {
+            console.log(err);
+            res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
         }
-    })
 
-})
-app.get('/signup', (req, res) => {
-    let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-    pool.query(getArticlesQuery, (error, articles) => {
-        if (error) {
-            console.log(error);
-            res.send("Error " + error);
-        } else {
-            if (req.session.user) {
-                res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: req.session.user, footerArticles: articles.rows })
-            } else {
-                res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: null, footerArticles: articles.rows })
-            }
-        }
     })
-})
+    // app.get('/login', (req, res) => {
+    //     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+    //     pool.query(getArticlesQuery, (error, articles) => {
+    //         if (error) {
+    //             console.log(error);
+    //             res.send("Error " + error);
+    //         } else {
+    //             if (req.session.user) {
+    //                 res.render('pages/login.ejs', { pageTitle: "login", user: req.session.user, action: null, footerArticles: articles.rows })
+    //             } else {
+    //                 res.render('pages/login.ejs', { pageTitle: "login", user: null, action: null, footerArticles: articles.rows })
+    //             }
+    //         }
+    //     })
+
+// })
+// app.get('/signup', (req, res) => {
+//     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+//     pool.query(getArticlesQuery, (error, articles) => {
+//         if (error) {
+//             console.log(error);
+//             res.send("Error " + error);
+//         } else {
+//             if (req.session.user) {
+//                 res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: req.session.user, footerArticles: articles.rows })
+//             } else {
+//                 res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: null, footerArticles: articles.rows })
+//             }
+//         }
+//     })
+// })
 
 
 //add more ejs functionality
 //every change test meeting function
 
-app.get('/information', (req, res) => {
+// app.get('/information', (req, res) => {
 
-    try {
-        let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-        pool.query(getArticlesQuery, (error, articles) => {
-            if (error) {
-                console.log(error);
-                res.send("Error " + error);
-            } else {
-                if (req.session.user) {
-                    res.render('pages/information.ejs', { pageTitle: "information", user: req.session.user, footerArticles: articles.rows });
+//     try {
+//         let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+//         pool.query(getArticlesQuery, (error, articles) => {
+//             if (error) {
+//                 console.log(error);
+//                 res.send("Error " + error);
+//             } else {
+//                 if (req.session.user) {
+//                     res.render('pages/information.ejs', { pageTitle: "information", user: req.session.user, footerArticles: articles.rows });
 
-                } else {
-                    res.render('pages/information.ejs', { pageTitle: "information", user: null, footerArticles: articles.rows })
-                }
-            }
-        })
+//                 } else {
+//                     res.render('pages/information.ejs', { pageTitle: "information", user: null, footerArticles: articles.rows })
+//                 }
+//             }
+//         })
 
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
+//     } catch (err) {
+//         console.error(err);
+//         res.send("Error " + err);
+//     }
 
-})
+// })
 
 
 
@@ -813,11 +806,15 @@ app.get('/logout', async(req, res) => {
 
 
 app.use('/articleFunctions', articleRouter)
-app.use('/dashboard', dashboardRouter)
+app.use('/dashboardFunctions', dashboardRouter)
 app.use('/database', databaseRouter)
-app.use('/library', libraryRouter)
+app.use('/libraryFunctions', libraryRouter)
 app.use('/viewUser', viewUserRouter)
 
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 //this was neccasry for mocha to get server adreess
 module.exports = app;
