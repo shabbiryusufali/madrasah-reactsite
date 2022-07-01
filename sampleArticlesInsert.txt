@@ -1,0 +1,1 @@
+INSERT INTO blog (title,description,markdown,author) VALUES ('Test','This is the Description','This is the Contents of the Article','Shabbir Yusufali');
