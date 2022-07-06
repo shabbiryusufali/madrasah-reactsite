@@ -29,9 +29,6 @@ function UserList() {
       <h1 className="text-center text-6xl">List of Users</h1>
       <br />
       <br />
-      <a href="/articles/new" className="rounded bg-blue-500 text-start hover:bg-blue-900 px-4 py-2 text-white">New Post</a>
-      <br />
-      <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

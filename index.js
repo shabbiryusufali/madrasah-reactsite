@@ -428,14 +428,6 @@ app.post('/editMailingList', (req, res) => {
 })
 
 
-
-app.get('/fail', (req, res) => {
-    res.render('pages/login.ejs', { pageTitle: "login", user: null, action: "incorrect" });
-})
-
-
-
-
 app.post('/login_action', urlencodedParser, async(req, res) => {
 
 
@@ -458,15 +450,16 @@ app.post('/login_action', urlencodedParser, async(req, res) => {
         }
         if (pw == results.row[0].pass) {
             req.session.user = results.row[0];
+            console.log(req.session.user)
             console.log(req.sessionID)
             res.redirect("/dashboard")
         } else {
-            res.redirect("/fail")
+            res.redirect("/login/incorrect")
         }
         client.release();
     } catch (err) {
         console.error(err);
-        res.redirect("/fail")
+        res.redirect("/login/erroroccured")
     }
 })
 
@@ -498,7 +491,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
             for (let i = 0; i < results.results.length; i++) {
                 console.log(results.results);
                 let r = results.results[i];
-                if (r.email == email) {
+                if (r.email == email || r.user_name == un) {
                     doQuery = false;
                     break;
                 }
@@ -565,7 +558,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                         console.log('Email Sent Successfully');
                     }
                 });
-                res.redirect("/dashboard/newUser")
+                res.redirect("/dashboard/success")
             } else {
                 let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
                 pool.query(getArticlesQuery, (error, articles) => {
@@ -573,7 +566,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/userexists.ejs', { pageTitle: "Sign Up", erroredInfo: "email", footerArticles: articles.rows });
+                        res.redirect('/signup/userexists');
                     }
                 })
             }
@@ -587,11 +580,8 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                     console.log(error);
                     res.send("Error " + error);
                 } else {
-                    if (req.session.user) {
-                        res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "unmatchpw", user: req.session.user, footerArticles: articles.rows })
-                    } else {
-                        res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "unmatchpw", user: null, footerArticles: articles.rows })
-                    }
+                    res.redirect('/signup/unmatchpassword')
+
                 }
             })
         }
@@ -641,7 +631,7 @@ app.get('/verifyAccount', async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: null, action: 'accountverified', footerArticles: articles.rows })
+                        res.redirect('/dashboard')
                     }
                 })
             }
@@ -654,12 +644,7 @@ app.get('/verifyAccount', async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/dashboard.ejs', {
-                            pageTitle: "dashboard",
-                            user: req.session.user,
-                            action: 'failedverified',
-                            footerArticles: articles.rows
-                        })
+                        res.redirect('/dashboard')
                     }
                 })
             } else {
@@ -669,21 +654,29 @@ app.get('/verifyAccount', async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: null, action: 'failedverified', footerArticles: articles.rows })
+
+                        res.redirect('/dashboard')
                     }
                 })
             }
         }
     } catch (err) {
         console.log(err)
-        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: null, action: 'failedverified', footerArticles: articles.rows })
+        res.redirect('/dashboard')
+    }
+})
+
+app.get('/getActiveUser', (req, res) => {
+    if (req.session.user) {
+        console.log(req.session.user)
+        res.json(req.session.user)
+    } else {
+        res.json(null)
     }
 })
 
 
-
-
-app.get('/logout', async(req, res) => {
+app.get('/logoutAction', async(req, res) => {
     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
     pool.query(getArticlesQuery, (error, articles) => {
         if (error) {
@@ -696,12 +689,12 @@ app.get('/logout', async(req, res) => {
                     if (err) {
                         res.status(400).send('Unable to log out')
                     } else {
-                        res.render('pages/logout.ejs', { pageTitle: "Logout", user: null, footerArticles: articles.rows });
+                        res.redirect('/logout')
                     }
                 });
 
             } else {
-                res.render('pages/alreadylogout.ejs', { pageTitle: "Logout", user: null, footerArticles: articles.rows });
+                res.redirect('/logout/loggedout')
             }
         }
     })

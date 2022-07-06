@@ -10,9 +10,9 @@ function MailingListForm() {
           <label for="mailinglist">Would you like to be on the Mailing list?</label>
         </td>
         <td>
-          <input type="radio" id="mailinglist" name="mailinglist" value="true" />
+          <input type="radio" id="mailinglistTrue" name="mailinglist" value="true" />
           <label>Yes</label>
-          <input type="radio" id="mailinglist" name="mailinglist" value="false" />
+          <input type="radio" id="mailinglistFalse" name="mailinglist" value="false" />
           <label>No</label>
         </td>
       </tr>

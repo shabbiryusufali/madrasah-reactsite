@@ -16,6 +16,7 @@ import InsertPost from './components/articles/InsertPost';
 import EditPost from './components/articles/EditPost';
 import UserList from './components/database/UserList';
 import User from './components/database/User';
+import LoggedOut from './components/LoggedOut';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -36,9 +37,14 @@ root.render(
       <Route path="/articles/edit/:id" element={<EditPost />} />
       <Route path="/articles/:id" element={<BlogPost />} />
       <Route path="/information" element={<Information />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path="/signup/:error" element={<SignUp />} />
+      <Route path="/signup/" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/login/:error" element={<Login />} />
+      <Route path="/logout" element={<LoggedOut />} />
+      <Route path="/logout/:error" element={<LoggedOut />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard/:status" element={<Dashboard />} />
       <Route path="/database" element={<UserList />} />
       <Route path="/database/:id" element={<User />} />
     </Routes>
