@@ -77,24 +77,12 @@ app.get('/getFooterArticles', (req, res) => {
 
 
 
-app.post('/deleteUser/:ID', (req, res) => {
-    try {
-        var idToDelete = req.params.ID;
-        var deleteQuery = `DELETE FROM ${process.env.PG_DB_TABLE} WHERE id=${idToDelete};`;
-        pool.query(deleteQuery);
-        res.redirect('/database');
-    } catch (err) {
-        console.log(err);
-        res.send("Error " + err);
-    }
-
-})
 app.post('/verifyUser/:ID', (req, res) => {
     try {
         var idToVerify = req.params.ID;
         var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = true WHERE id=${idToVerify};`;
         pool.query(verifyQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToVerify}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -102,37 +90,13 @@ app.post('/verifyUser/:ID', (req, res) => {
 
 })
 
-app.post('/teacherUser/:ID', (req, res) => {
-    try {
-        var idToVerify = req.params.ID;
-        var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = true WHERE id=${idToVerify};`;
-        pool.query(verifyQuery);
-        res.redirect('/database');
-    } catch (err) {
-        console.log(err);
-        res.send("Error " + err);
-    }
 
-})
-
-app.post('/studentUser/:ID', (req, res) => {
-    try {
-        var idToVerify = req.params.ID;
-        var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = true WHERE id=${idToVerify};`;
-        pool.query(verifyQuery);
-        res.redirect('/database');
-    } catch (err) {
-        console.log(err);
-        res.send("Error " + err);
-    }
-
-})
 app.post('/revokeVerify/:ID', (req, res) => {
     try {
         var idToVerify = req.params.ID;
         var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = false WHERE id=${idToVerify};`;
         pool.query(verifyQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToVerify}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -144,7 +108,7 @@ app.post('/adminUser/:ID', (req, res) => {
         var idToAdmin = req.params.ID;
         var adminQuery = `UPDATE ${process.env.PG_DB_TABLE} SET admin = true, verified = true WHERE id=${idToAdmin};`;
         pool.query(adminQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAdmin}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -156,7 +120,7 @@ app.post('/teacherUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = true WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -167,7 +131,7 @@ app.post('/unteacherUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = false WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -180,7 +144,7 @@ app.post('/studentUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = true WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -191,7 +155,7 @@ app.post('/unstudentUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = false WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -205,7 +169,7 @@ app.post('/alumnUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = true WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -216,7 +180,7 @@ app.post('/unalumnUser/:ID', (req, res) => {
         var idToAlter = req.params.ID;
         var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = false WHERE id=${idToAlter};`;
         pool.query(alterQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToAlter}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -230,7 +194,7 @@ app.post('/resetPassword/:ID', (req, res) => {
         var idToChange = req.params.ID;
         var passChangeQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = "defaultPassword" WHERE id=${idToChange};`;
         pool.query(passChangeQuery);
-        res.redirect('/database');
+        res.redirect(`/database/${idToChange}`);
     } catch (err) {
         console.log(err);
         res.send("Error " + err);
@@ -433,95 +397,35 @@ app.post('/changePassword', (req, res) => {
 })
 
 app.post('/editMailingList', (req, res) => {
-        try {
-            let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-            pool.query(getArticlesQuery, (error, articles) => {
-                if (error) {
-                    console.log(error);
-                    res.send("Error " + error);
+    try {
+        let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+        pool.query(getArticlesQuery, (error, articles) => {
+            if (error) {
+                console.log(error);
+                res.send("Error " + error);
+            } else {
+                var idToChange = req.session.user.id;
+                var mailinglist = req.body.mailinglist;
+                var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET mailinglist = ${mailinglist} WHERE id=${idToChange};`;
+                console.log(req.session.user.pass);
+                if (req.session.user) {
+                    pool.query(changePassQuery);
+                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+
                 } else {
-                    var idToChange = req.session.user.id;
-                    var mailinglist = req.body.mailinglist;
-                    var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET mailinglist = ${mailinglist} WHERE id=${idToChange};`;
-                    console.log(req.session.user.pass);
-                    if (req.session.user) {
-                        pool.query(changePassQuery);
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
-
-                    } else {
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown", footerArticles: articles.rows })
-                    }
+                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown", footerArticles: articles.rows })
                 }
-            })
+            }
+        })
 
 
 
-        } catch (err) {
-            console.log(err);
-            res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
-        }
+    } catch (err) {
+        console.log(err);
+        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
+    }
 
-    })
-    // app.get('/login', (req, res) => {
-    //     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-    //     pool.query(getArticlesQuery, (error, articles) => {
-    //         if (error) {
-    //             console.log(error);
-    //             res.send("Error " + error);
-    //         } else {
-    //             if (req.session.user) {
-    //                 res.render('pages/login.ejs', { pageTitle: "login", user: req.session.user, action: null, footerArticles: articles.rows })
-    //             } else {
-    //                 res.render('pages/login.ejs', { pageTitle: "login", user: null, action: null, footerArticles: articles.rows })
-    //             }
-    //         }
-    //     })
-
-// })
-// app.get('/signup', (req, res) => {
-//     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-//     pool.query(getArticlesQuery, (error, articles) => {
-//         if (error) {
-//             console.log(error);
-//             res.send("Error " + error);
-//         } else {
-//             if (req.session.user) {
-//                 res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: req.session.user, footerArticles: articles.rows })
-//             } else {
-//                 res.render('pages/signup.ejs', { pageTitle: "signup", erroredinfo: "none", user: null, footerArticles: articles.rows })
-//             }
-//         }
-//     })
-// })
-
-
-//add more ejs functionality
-//every change test meeting function
-
-// app.get('/information', (req, res) => {
-
-//     try {
-//         let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-//         pool.query(getArticlesQuery, (error, articles) => {
-//             if (error) {
-//                 console.log(error);
-//                 res.send("Error " + error);
-//             } else {
-//                 if (req.session.user) {
-//                     res.render('pages/information.ejs', { pageTitle: "information", user: req.session.user, footerArticles: articles.rows });
-
-//                 } else {
-//                     res.render('pages/information.ejs', { pageTitle: "information", user: null, footerArticles: articles.rows })
-//                 }
-//             }
-//         })
-
-//     } catch (err) {
-//         console.error(err);
-//         res.send("Error " + err);
-//     }
-
-// })
+})
 
 
 
@@ -807,7 +711,7 @@ app.get('/logout', async(req, res) => {
 
 app.use('/articleFunctions', articleRouter)
 app.use('/dashboardFunctions', dashboardRouter)
-app.use('/database', databaseRouter)
+app.use('/databaseFunctions', databaseRouter)
 app.use('/libraryFunctions', libraryRouter)
 app.use('/viewUser', viewUserRouter)
 

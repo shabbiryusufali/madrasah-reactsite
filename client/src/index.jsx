@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 import Homepage from './components/Homepage';
-import Blog from './components/Blog';
+import Blog from './components/articles/Blog';
 import Library from './components/Library';
 import Information from './components/Information';
 import SignUp from './components/SignUp';
@@ -11,7 +11,11 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import BlogPost from './components/BlogPost';
+import BlogPost from './components/articles/BlogPost';
+import InsertPost from './components/articles/InsertPost';
+import EditPost from './components/articles/EditPost';
+import UserList from './components/database/UserList';
+import User from './components/database/User';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -27,11 +31,16 @@ root.render(
       <Route path="/" element={<Homepage />} />
       <Route path="/library" element={<Library />} />
       <Route path="/articles" element={<Blog />} />
+      <Route path="/articles/new" element={<InsertPost />} />
+      <Route path="/articles/edit/" element={<InsertPost />} />
+      <Route path="/articles/edit/:id" element={<EditPost />} />
       <Route path="/articles/:id" element={<BlogPost />} />
       <Route path="/information" element={<Information />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/database" element={<UserList />} />
+      <Route path="/database/:id" element={<User />} />
     </Routes>
   </BrowserRouter>
   </div>

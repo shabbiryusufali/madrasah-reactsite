@@ -15,43 +15,44 @@ router.use((req, res, next) => {
 router.get('/', async(req, res) => {
 
     try {
-        if (req.session.user) {
-            if (req.session.user.admin == true) {
-                const client = await pool.connect();
-                const result = await client.query(`SELECT * FROM ${process.env.PG_DB_TABLE} ORDER BY id ASC`);
-                const results = { 'results': (result) ? result.rows : null };
-                let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-                pool.query(getArticlesQuery, (error, articles) => {
-                    if (error) {
-                        console.log(error);
-                        res.send("Error " + error);
-                    } else {
-                        res.render('pages/database.ejs', { pageTitle: "List of Users", user: req.session.user, results: results, footerArticles: articles.rows })
-                    }
-                })
-                client.release();
+        // if (req.session.user) {
+        //     if (req.session.user.admin == true) {
+        const client = await pool.connect();
+        const result = await client.query(`SELECT * FROM ${process.env.PG_DB_TABLE} ORDER BY id ASC`);
+        const results = { 'results': (result) ? result.rows : null };
+        let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+        pool.query(getArticlesQuery, (error, articles) => {
+            if (error) {
+                console.log(error);
+                res.send("Error " + error);
             } else {
-                let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-                pool.query(getArticlesQuery, (error, articles) => {
-                    if (error) {
-                        console.log(error);
-                        res.send("Error " + error);
-                    } else {
-                        res.render('pages/unauthorized.ejs', { pageTitle: "Database", user: req.session.user, footerArticles: articles.rows });
-                    }
-                })
+                res.json({ results: results.results })
+                    // res.json({ user: req.session.user, results: results})
             }
-        } else {
-            let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-            pool.query(getArticlesQuery, (error, articles) => {
-                if (error) {
-                    console.log(error);
-                    res.send("Error " + error);
-                } else {
-                    res.render('pages/unauthorized.ejs', { pageTitle: "Database", user: null, footerArticles: articles.rows })
-                }
-            })
-        }
+        })
+        client.release();
+        // } else {
+        //     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+        //     pool.query(getArticlesQuery, (error, articles) => {
+        //         if (error) {
+        //             console.log(error);
+        //             res.send("Error " + error);
+        //         } else {
+        //             res.json({ user: req.session.user, footerArticles: articles.rows });
+        //         }
+        //     })
+        // }
+        // } else {
+        //     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
+        //     pool.query(getArticlesQuery, (error, articles) => {
+        //         if (error) {
+        //             console.log(error);
+        //             res.send("Error " + error);
+        //         } else {
+        //             res.json({ user: null, footerArticles: articles.rows })
+        //         }
+        //     })
+        // }
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
@@ -81,7 +82,7 @@ router.get('/search', async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/database.ejs', { pageTitle: "List of Users", user: req.session.user, results: results, footerArticles: articles.rows })
+                        res.render('pages/database.ejs', { user: req.session.user, results: results, })
                     }
                 })
                 client.release();
@@ -92,7 +93,7 @@ router.get('/search', async(req, res) => {
                         console.log(error);
                         res.send("Error " + error);
                     } else {
-                        res.render('pages/unauthorized.ejs', { pageTitle: "Database", user: req.session.user, footerArticles: articles.rows });
+                        res.render('pages/unauthorized.ejs', { user: req.session.user });
                     }
                 })
             }
@@ -103,7 +104,7 @@ router.get('/search', async(req, res) => {
                     console.log(error);
                     res.send("Error " + error);
                 } else {
-                    res.render('pages/unauthorized.ejs', { pageTitle: "Database", user: null, footerArticles: articles.rows })
+                    res.render('pages/unauthorized.ejs', { user: null })
                 }
             })
         }
@@ -114,6 +115,18 @@ router.get('/search', async(req, res) => {
 
 })
 
+router.delete('/:id', (req, res) => {
+    var ID = req.params.id;
+    var deleteArticleQuery = `DELETE FROM ${process.env.PG_DB_TABLE} where id ='${ID}'`;
+    pool.query(deleteArticleQuery, (error, result) => {
+        if (error) {
+            res.send(error);
+        } else {
+            console.log('Post', ID, 'was deleted')
+            res.redirect('/');
+        }
+    })
+})
 
 
 module.exports = router;

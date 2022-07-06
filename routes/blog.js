@@ -84,7 +84,7 @@ router.get('/edit/:id', (req, res) => {
 
 // need to check input
 // adding a new article to the blog
-router.post('/', (req, res) => {
+router.post('/new', (req, res) => {
     try {
         let fname;
         let lname;
@@ -98,7 +98,8 @@ router.post('/', (req, res) => {
         let title = req.body.title;
         let description = req.body.description;
         let markdown = req.body.markdown;
-        // console.log("Markdown: " + markdown);
+        markdown = markdown.replace(/\'/gi, "''")
+        console.log("Markdown: " + markdown);
         let addArticleQuery = `INSERT INTO ${process.env.PG_BLOG_TABLE} (title, description, markdown, author) VALUES ('${title}', '${description}', E'${markdown}', '${fname} ${lname}')`;
         pool.query(addArticleQuery);
     } catch (err) {
