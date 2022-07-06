@@ -25,23 +25,7 @@ function BlogPost() {
       f();
     }, [])
 
-    useEffect(
-      () => {
-          const f = async () => {
-              const data = await fetch(`/getActiveUser`)
-              console.log('a', data)
-              const jsonData = await data.json()
-              console.log('b', jsonData)
-              if(jsonData){   
-              console.log('c', user)
-                  setUser(jsonData)
-                  console.log('d', user)
-              } else{
-    
-              }
-          }
-          f();
-      }, [])
+ 
 
   let postDateRaw = post.date.split('T');
   let postDateParsed = postDateRaw[0].split('-');
@@ -49,29 +33,47 @@ function BlogPost() {
   let postMonth = postDateParsed[1]
   let postDate = postDateParsed[2]
 
-  if (postMonth == 1) {
+  useEffect(
+    () => {
+        const f = async () => {
+            const data = await fetch(`/getActiveUser`)
+            console.log('a', data)
+            const jsonData = await data.json()
+            console.log('b', jsonData)
+            if(jsonData){   
+            console.log('c', user)
+                setUser(jsonData)
+                console.log('d', user)
+            } else{
+  
+            }
+        }
+        f();
+    }, [])
+
+  if (postMonth === 1) {
     postMonth = "January"
-  } else if (postMonth == 2) {
+  } else if (postMonth === 2) {
     postMonth = "February"
-  } else if (postMonth == 3) {
+  } else if (postMonth === 3) {
     postMonth = "March"
-  } else if (postMonth == 4) {
+  } else if (postMonth === 4) {
     postMonth = "April"
-  } else if (postMonth == 5) {
+  } else if (postMonth === 5) {
     postMonth = "May"
-  } else if (postMonth == 6) {
+  } else if (postMonth === 6) {
     postMonth = "June"
-  } else if (postMonth == 7) {
+  } else if (postMonth === 7) {
     postMonth = "July"
-  } else if (postMonth == 8) {
+  } else if (postMonth === 8) {
     postMonth = "August"
-  } else if (postMonth == 9) {
+  } else if (postMonth === 9) {
     postMonth = "September"
-  } else if (postMonth == 10) {
+  } else if (postMonth === 10) {
     postMonth = "October"
-  } else if (postMonth == 11) {
+  } else if (postMonth === 11) {
     postMonth = "November"
-  } else if (postMonth == 12) {
+  } else if (postMonth === 12) {
     postMonth = "December"
   } else {
     postMonth = "Undefined Date"

@@ -10,7 +10,24 @@ function EditPost() {
     let action = `/articleFunctions/${id}`
     let backButton = `/articles/${id}`
     let navigate = useNavigate();
-
+    useEffect(
+      () => {
+        const f = async () => {
+          console.log(id)
+          const data = await fetch(`/articleFunctions/${id}`)
+          console.log('a', data)
+          const jsonData = await data.json()
+          console.log('b', jsonData)
+            console.log('c', post)
+            setPost(jsonData)
+            console.log('d', jsonData)
+        
+        }
+        f();
+      }, [])
+  
+      
+  var content = post.markdown.split(/\n/g)
 
   return (
     <div className='App'>
@@ -25,15 +42,17 @@ function EditPost() {
             <br />
             <label for='title' className='text-white'>Title:</label>
             <br />
-            <input type='text' name='title' id='title' className='rounded w-full px-2 py-1 ' />
+            <input type='text' name='title' id='title' className='rounded w-full px-2 py-1' value={post.title} />
             <br />
             <label for='description' className='text-white'>Description:</label>
             <br />
-            <input type='text' name='description' id='description' className='rounded w-full px-2 py-1 ' />
+            <input type='text' name='description' id='description' className='rounded w-full px-2 py-1 ' value={post.description} />
             <br />
             <label for='markdown' className='text-white'>Content:</label>
             <br />
-            <textarea name="markdown" id="markdown" rows='20' className='w-full px-2 py-1 rounded'></textarea>
+            <textarea name="markdown" id="markdown" rows='20' className='w-full px-2 py-1 rounded' value={content.map(line => {
+              return line
+            })}></textarea>
             <input type='submit' value='Submit' className='rounded bg-blue-500 hover:bg-blue-900 text-white px-4 py-2' />
             </div>
         </form>

@@ -33,7 +33,7 @@ function Header() {
         <a href="/information" className='bg-transparent   mx-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>Information</a>
       </div>
       <div className='w-fit'>
-    {user.user_name == "Null" ? 
+    {user.user_name === "Null" ? 
     <>
       <a href="/signup" className='bg-transparent  mx-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>Sign Up</a>
       <a href="/login" className='bg-transparent  mx-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>Login</a>

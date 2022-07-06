@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import BlogPost from './components/articles/BlogPost';
 import InsertPost from './components/articles/InsertPost';
 import EditPost from './components/articles/EditPost';
+import EditNull from './components/articles/EditNull';
 import UserList from './components/database/UserList';
 import User from './components/database/User';
 import LoggedOut from './components/LoggedOut';
@@ -33,7 +34,7 @@ root.render(
       <Route path="/library" element={<Library />} />
       <Route path="/articles" element={<Blog />} />
       <Route path="/articles/new" element={<InsertPost />} />
-      <Route path="/articles/edit/" element={<InsertPost />} />
+      <Route path="/articles/edit/" element={<EditNull />} />
       <Route path="/articles/edit/:id" element={<EditPost />} />
       <Route path="/articles/:id" element={<BlogPost />} />
       <Route path="/information" element={<Information />} />
