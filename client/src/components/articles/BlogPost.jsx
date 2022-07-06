@@ -31,6 +31,7 @@ function BlogPost() {
   let postDateParsed = postDateRaw[0].split('-');
   let postYear = postDateParsed[0]
   let postMonth = postDateParsed[1]
+  postMonth = parseInt(postMonth)
   let postDate = postDateParsed[2]
 
   useEffect(
