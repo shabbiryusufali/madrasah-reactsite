@@ -548,7 +548,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                     from: 'cmpt276group3.2022@gmail.com',
                     to: email,
                     subject: 'Action Required - Verify Account',
-                    text: 'Please Verify your email address: ' + `https://floating-waters-60318.herokuapp.com/verifyAccount?one=${random1}&two=${random2}&three=${random3}`
+                    text: 'Please Verify your email address: ' + `https://madrasah-reactsite.herokuapp.com/verifyAccount?one=${random1}&two=${random2}&three=${random3}`
                 }
                 mailTransporter.sendMail(mailDetails, function(err, data) {
                     if (err) {
