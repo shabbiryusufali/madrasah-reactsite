@@ -36,7 +36,7 @@ router.post('/addBook', urlencodedParser, async(req, res) => {
     } catch (err) {
         console.error(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -62,7 +62,7 @@ router.post('/returnBook', urlencodedParser, async(req, res) => {
     } catch (err) {
         console.error(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -109,7 +109,7 @@ router.post('/checkoutBook', urlencodedParser, async(req, res) => {
     } catch (err) {
         console.error(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -126,7 +126,7 @@ router.get('/books', (req, res) => {
         if (error) {
             console.log(error);
             if (process.env.NODE_ENV == "production") {
-                req.redirect('/error')
+                res.redirect('/error')
             } else {
                 res.send("Error " + err);
             }
@@ -146,7 +146,7 @@ router.get('/borrowedBooks', (req, res) => {
         if (error) {
             console.log(error);
             if (process.env.NODE_ENV == "production") {
-                req.redirect('/error')
+                res.redirect('/error')
             } else {
                 res.send("Error " + err);
             }
@@ -168,7 +168,7 @@ router.get('/book/:id', (req, res) => {
             pool.query(getBookQuery, (error, result) => {
                 if (error) {
                     if (process.env.NODE_ENV == "production") {
-                        req.redirect('/error')
+                        res.redirect('/error')
                     } else {
                         res.send("Error " + err);
                     }

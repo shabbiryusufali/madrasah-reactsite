@@ -78,7 +78,7 @@ app.post('/verifyUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -104,7 +104,7 @@ app.post('/revokeVerify/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -128,7 +128,7 @@ app.post('/adminUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -152,7 +152,7 @@ app.post('/teacherUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -175,7 +175,7 @@ app.post('/unteacherUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -200,7 +200,7 @@ app.post('/studentUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -223,7 +223,7 @@ app.post('/unstudentUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -249,7 +249,7 @@ app.post('/alumnUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -272,7 +272,7 @@ app.post('/unalumnUser/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }
@@ -298,7 +298,7 @@ app.post('/resetPassword/:ID', (req, res) => {
     } catch (err) {
         console.log(err);
         if (process.env.NODE_ENV == "production") {
-            req.redirect('/error')
+            res.redirect('/error')
         } else {
             res.send("Error " + err);
         }

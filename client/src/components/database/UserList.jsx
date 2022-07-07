@@ -20,7 +20,7 @@ function UserList() {
       user.link = `/database/${user.id}`
     })
 
-    const filterText = e => {
+    const filterByUsername = e => {
       var value = e.target.value
       setUsersFiltered(
         users.results.filter(item => {
@@ -41,7 +41,7 @@ function UserList() {
       <br />
       <br />
       <h2 className="text-white">Filter by username</h2>
-      <input type='text' name='filterText' id='filterText' onChange={filterText} className='rounded w-full'/>
+      <input type='text' name='filterText' id='filterText' onChange={filterByUsername} className='rounded w-full'/>
     <br />
     <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

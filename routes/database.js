@@ -94,7 +94,7 @@ router.delete('/:id', (req, res) => {
                 if (error) {
                     console.log(err);
                     if (process.env.NODE_ENV == "production") {
-                        req.redirect('/error')
+                        res.redirect('/error')
                     } else {
                         res.send("Error " + err);
                     }
