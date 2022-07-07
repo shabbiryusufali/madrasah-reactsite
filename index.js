@@ -7,7 +7,6 @@ const session = require('express-session');
 const pool = require('./db');
 const randomstring = require("randomstring");
 const articleRouter = require('./routes/blog')
-const dashboardRouter = require('./routes/dashboard')
 const databaseRouter = require('./routes/database')
 const viewUserRouter = require('./routes/viewUser')
 const libraryRouter = require('./routes/library')
@@ -31,19 +30,6 @@ app.use(session({
 
 app.use(cors())
 
-app.use(function(req, res, next) {
-    res.locals.user = req.session.user;
-    res.locals.footerArticles = [];
-    pool.query(`SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`, (error, articles) => {
-        if (error) {
-            console.log(error);
-            res.send("Error " + error);
-        } else {
-            res.locals.footerArticles = articles.rows
-        }
-    })
-    next();
-});
 
 //unknown functionality --> security -->>relaxes secirtuy need research?
 //“CORS” stands for Cross-Origin Resource Sharing. It allows you to make requests from one website to another website in the browser, which is normally prohibited by another browser policy called the Same-Origin Policy (SOP)
@@ -58,11 +44,9 @@ app.use(express.urlencoded({ extended: true }))
 //adddeed slash to fix
 app.use(express.static(path.join(__dirname, '/public')))
 app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get('/getFooterArticles', (req, res) => {
-
     let getFooterArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 6`;
     pool.query(getFooterArticlesQuery, (error, articles) => {
         if (error) {
@@ -79,13 +63,25 @@ app.get('/getFooterArticles', (req, res) => {
 
 app.post('/verifyUser/:ID', (req, res) => {
     try {
-        var idToVerify = req.params.ID;
-        var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = true WHERE id=${idToVerify};`;
-        pool.query(verifyQuery);
-        res.redirect(`/database/${idToVerify}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToVerify = req.params.ID;
+                var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = true WHERE id=${idToVerify};`;
+                pool.query(verifyQuery);
+                res.redirect(`/database/${idToVerify}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 
 })
@@ -93,72 +89,144 @@ app.post('/verifyUser/:ID', (req, res) => {
 
 app.post('/revokeVerify/:ID', (req, res) => {
     try {
-        var idToVerify = req.params.ID;
-        var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = false WHERE id=${idToVerify};`;
-        pool.query(verifyQuery);
-        res.redirect(`/database/${idToVerify}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToVerify = req.params.ID;
+                var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = false WHERE id=${idToVerify};`;
+                pool.query(verifyQuery);
+                res.redirect(`/database/${idToVerify}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 
 })
 app.post('/adminUser/:ID', (req, res) => {
     try {
-        var idToAdmin = req.params.ID;
-        var adminQuery = `UPDATE ${process.env.PG_DB_TABLE} SET admin = true, verified = true WHERE id=${idToAdmin};`;
-        pool.query(adminQuery);
-        res.redirect(`/database/${idToAdmin}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAdmin = req.params.ID;
+                var adminQuery = `UPDATE ${process.env.PG_DB_TABLE} SET admin = true, verified = true WHERE id=${idToAdmin};`;
+                pool.query(adminQuery);
+                res.redirect(`/database/${idToAdmin}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 
 })
 app.post('/teacherUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = true WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = true WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 app.post('/unteacherUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = false WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET teacher = false WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 
 
 app.post('/studentUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = true WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = true WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 app.post('/unstudentUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = false WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET student = false WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 
@@ -166,24 +234,48 @@ app.post('/unstudentUser/:ID', (req, res) => {
 
 app.post('/alumnUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = true WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = true WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 app.post('/unalumnUser/:ID', (req, res) => {
     try {
-        var idToAlter = req.params.ID;
-        var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = false WHERE id=${idToAlter};`;
-        pool.query(alterQuery);
-        res.redirect(`/database/${idToAlter}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var alterQuery = `UPDATE ${process.env.PG_DB_TABLE} SET alumn = false WHERE id=${idToAlter};`;
+                pool.query(alterQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 
@@ -191,13 +283,25 @@ app.post('/unalumnUser/:ID', (req, res) => {
 
 app.post('/resetPassword/:ID', (req, res) => {
     try {
-        var idToChange = req.params.ID;
-        var passChangeQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = "defaultPassword" WHERE id=${idToChange};`;
-        pool.query(passChangeQuery);
-        res.redirect(`/database/${idToChange}`);
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToChange = req.params.ID;
+                var passChangeQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = "defaultPassword" WHERE id=${idToChange};`;
+                pool.query(passChangeQuery);
+                res.redirect(`/database/${idToChange}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
     } catch (err) {
         console.log(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 
 })
@@ -218,10 +322,10 @@ app.post('/changeFirstName', (req, res) => {
                 if (fname == fname2) {
                     pool.query(changeQuery);
                     req.session.user.fname = fname;
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
 
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "nomatch", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
 
                 }
             }
@@ -249,9 +353,9 @@ app.post('/changeLastName', (req, res) => {
                 if (lname == lname2) {
                     pool.query(changeQuery);
                     req.session.user.lname = lname;
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "nomatch", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
                 }
             }
         })
@@ -301,17 +405,12 @@ app.post('/changeEmail', (req, res) => {
                         const OAuth2 = google.auth.OAuth2;
                         const myOAuth2Client2 = new OAuth2(
 
-                            //"403774031288-hfosevpvo9ustiuq5lug9u3d0vss3lva.apps.googleusercontent.com",
-                            //"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"
                             process.env.GMAIL_CLIENT_ID,
                             process.env.GMAIL_CLIENT_SECRET,
                         )
                         myOAuth2Client2.setCredentials({
                             refresh_token: process.env.GMAIL_REFRESH_TOKEN
                         });
-                        //const myAccessToken = myOAuth2Client2.getAccessToken()
-
-
                         const mailTransporter = nodemailer.createTransport({
                             service: 'gmail',
                             auth: {
@@ -320,12 +419,6 @@ app.post('/changeEmail', (req, res) => {
                                 clientId: process.env.GMAIL_CLIENT_ID,
                                 clientSecret: process.env.GMAIL_CLIENT_SECRET,
                                 refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-
-                                //clientId: "403774031288-hfosevpvo9ustiuq5lug9u3d0vss3lva.apps.googleusercontent.com",
-                                //clientSecret: "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",
-                                //refreshToken: "",
-                                //accessToken: "ya29.A0ARrdaM-xmnifolBe0pgs_VKRczd62JE9TrjiBy79SBY-8sUfpp3sb1hyTTu57b9j5xHuNHdXqGtwR_yIp8D9MR38hXaD2PYivPbnr8M_n5qJ5MBZXpkkmRo3-FdJlZJSuzz4umfGjaNzVoxEqwJuWepj2onC" //myAccessToken
-                                //accessToken: myAccessToken
                             }
                         });
                         let mailDetails = {
@@ -343,14 +436,13 @@ app.post('/changeEmail', (req, res) => {
                             }
                         });
                         req.session.user.email = email;
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+                        res.redirect(`/dashboard`);
                     } else {
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "exists", footerArticles: articles.rows })
+                        res.redirect(`/dashboard`);
                     }
 
-
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "nomatch", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
 
                 }
             }
@@ -379,12 +471,12 @@ app.post('/changePassword', (req, res) => {
                 if (req.session.user.pass == oldPass) {
                     if (newPass == newPass2) {
                         pool.query(changePassQuery);
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+                        res.redirect(`/dashboard`);
                     } else {
-                        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "nomatch", footerArticles: articles.rows })
+                        res.redirect(`/dashboard`);
                     }
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "incorrectpass", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
                 }
             }
         })
@@ -410,10 +502,10 @@ app.post('/editMailingList', (req, res) => {
                 console.log(req.session.user.pass);
                 if (req.session.user) {
                     pool.query(changePassQuery);
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "success", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
 
                 } else {
-                    res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown", footerArticles: articles.rows })
+                    res.redirect(`/dashboard`);
                 }
             }
         })
@@ -437,12 +529,10 @@ app.post('/login_action', urlencodedParser, async(req, res) => {
 
     try {
         const client = await pool.connect();
-        //make table local env variable same on heroku side
         const result = await client.query(userPasswordQuery);
         const results = { 'row': (result) ? result.rows : null };
-        //username should be unique
-        console.log("in: " + pw)
-        console.log("dt: " + results.row[0].pass)
+        console.log("input: " + pw)
+        console.log("database: " + results.row[0].pass)
 
 
         if (pw == results.row[0].pass) {
@@ -479,7 +569,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
 
     try {
         if (pw == pwv2) {
-            //make table local env variable same on heroku side
             const client = await pool.connect();
             var allUserQuery = `SELECT * FROM ${process.env.PG_DB_TABLE} ORDER BY id;`;
             const result = await client.query(allUserQuery);
@@ -505,7 +594,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                     x++;
                 }
             }
-            //})
             if (doQuery) {
                 console.log(x);
                 let random1 = randomstring.generate();
@@ -530,8 +618,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                     refresh_token: process.env.GMAIL_REFRESH_TOKEN
                 });
 
-
-
                 const mailTransporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
@@ -540,8 +626,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                         clientId: process.env.GMAIL_CLIENT_ID,
                         clientSecret: process.env.GMAIL_CLIENT_SECRET,
                         refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-
-
                     }
                 });
                 let mailDetails = {
@@ -703,7 +787,6 @@ app.get('/logoutAction', async(req, res) => {
 
 
 app.use('/articleFunctions', articleRouter)
-app.use('/dashboardFunctions', dashboardRouter)
 app.use('/databaseFunctions', databaseRouter)
 app.use('/libraryFunctions', libraryRouter)
 app.use('/viewUser', viewUserRouter)

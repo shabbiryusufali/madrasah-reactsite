@@ -9,7 +9,6 @@ const methodOverride = require('method-override');
 router.use(methodOverride('_method'))
 router.use(express.json(), cors());
 router.options('*', cors())
-    //middle ware
 router.use((req, res, next) => {
     next()
 })
@@ -17,71 +16,16 @@ router.use((req, res, next) => {
 
 router.post('/addBook', urlencodedParser, async(req, res) => {
     try {
-        var bookID = req.body.newBookID;
-        var bookTitle = req.body.newBookTitle;
-        var bookGrade = req.body.newBookGrade;
-        let insertQuery = `INSERT INTO ${process.env.PG_LIBRARY_TABLE}(id,title,gradelevel) VALUES (${bookID}, '${bookTitle}', ${bookGrade});`;
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var bookID = req.body.newBookID;
+                var bookTitle = req.body.newBookTitle;
+                var bookGrade = req.body.newBookGrade;
+                let insertQuery = `INSERT INTO ${process.env.PG_LIBRARY_TABLE}(id,title,gradelevel) VALUES (${bookID}, '${bookTitle}', ${bookGrade});`;
 
-        const client = await pool.connect();
-        const result = await client.query(insertQuery);
-        results = { 'results': (result) ? result.rows : null };
-
-        res.redirect('/library');
-
-
-        client.release();
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-
-router.post('/returnBook', urlencodedParser, async(req, res) => {
-    try {
-        var bookID = req.body.bookToReturnID;
-        let returnQuery = `UPDATE library SET userloanedto = NULL, userloanedtoid = NULL WHERE id = ${bookID}`;
-
-        const client = await pool.connect();
-        const result = await client.query(returnQuery);
-        results = { 'results': (result) ? result.rows : null };
-        res.redirect('/library');
-
-
-        client.release();
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-
-
-router.post('/checkoutBook', urlencodedParser, async(req, res) => {
-    try {
-        var bookID = req.body.bookID;
-        var studentID = req.body.studentID;
-        console.log('Got Body')
-        let bookQuery = `SELECT * FROM library WHERE id = ${bookID};`;
-        let studentQuery = `SELECT * FROM user_test1 WHERE id = ${studentID};`;
-
-        const client = await pool.connect();
-        const result = await client.query(bookQuery);
-        results = { 'results': (result) ? result.rows : null };
-        console.log(results)
-        console.log('Step 1 done!');
-        if (results.results[0]) {
-            console.log("Step 2 start...")
-            const result1 = await client.query(studentQuery);
-            results1 = { 'results': (result1) ? result1.rows : null };
-            console.log('Step 2 done!');
-            console.log(results1)
-            if (results1.results[0]) {
-                let checkoutToStudent = `UPDATE library SET userloanedto = '${results1.results[0].fname} ${results1.results[0].lname}', userloanedtoid = ${studentID}, date = CURRENT_TIMESTAMP WHERE id = ${bookID};`;
-                const result2 = await client.query(checkoutToStudent);
-                results2 = { 'results': (result2) ? result2.rows : null };
-                console.log('Step 3 done!');
-
+                const client = await pool.connect();
+                const result = await client.query(insertQuery);
+                results = { 'results': (result) ? result.rows : null };
             }
         }
         res.redirect('/library');
@@ -91,7 +35,84 @@ router.post('/checkoutBook', urlencodedParser, async(req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.send("Error " + err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
+    }
+})
+
+router.post('/returnBook', urlencodedParser, async(req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user.admin || req.session.teacher) {
+                var bookID = req.body.bookToReturnID;
+                let returnQuery = `UPDATE library SET userloanedto = NULL, userloanedtoid = NULL WHERE id = ${bookID}`;
+
+                const client = await pool.connect();
+                const result = await client.query(returnQuery);
+                results = { 'results': (result) ? result.rows : null };
+                res.redirect('/library');
+
+            }
+        }
+        client.release();
+
+    } catch (err) {
+        console.error(err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
+    }
+})
+
+
+router.post('/checkoutBook', urlencodedParser, async(req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user.admin || req.session.teacher) {
+                var bookID = req.body.bookID;
+                var studentID = req.body.studentID;
+                console.log('Got Body')
+                let bookQuery = `SELECT * FROM library WHERE id = ${bookID};`;
+                let studentQuery = `SELECT * FROM user_test1 WHERE id = ${studentID};`;
+
+                const client = await pool.connect();
+                const result = await client.query(bookQuery);
+                results = { 'results': (result) ? result.rows : null };
+                console.log(results)
+                console.log('Step 1 done!');
+                if (results.results[0]) {
+                    console.log("Step 2 start...")
+                    const result1 = await client.query(studentQuery);
+                    results1 = { 'results': (result1) ? result1.rows : null };
+                    console.log('Step 2 done!');
+                    console.log(results1)
+                    if (results1.results[0]) {
+                        let checkoutToStudent = `UPDATE library SET userloanedto = '${results1.results[0].fname} ${results1.results[0].lname}', userloanedtoid = ${studentID}, date = CURRENT_TIMESTAMP WHERE id = ${bookID};`;
+                        const result2 = await client.query(checkoutToStudent);
+                        results2 = { 'results': (result2) ? result2.rows : null };
+                        console.log('Step 3 done!');
+
+                    }
+                }
+            }
+        }
+        res.redirect('/library');
+
+
+        client.release();
+
+    } catch (err) {
+        console.error(err);
+        if (process.env.NODE_ENV == "production") {
+            req.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
     }
 })
 
@@ -104,7 +125,11 @@ router.get('/books', (req, res) => {
     pool.query(getBooksQuery, (error, result) => {
         if (error) {
             console.log(error);
-            res.send("Error " + error);
+            if (process.env.NODE_ENV == "production") {
+                req.redirect('/error')
+            } else {
+                res.send("Error " + err);
+            }
         } else {
             res.json({ array: result.rows })
         }
@@ -120,7 +145,11 @@ router.get('/borrowedBooks', (req, res) => {
     pool.query(getBooksQuery, (error, result) => {
         if (error) {
             console.log(error);
-            res.send("Error " + error);
+            if (process.env.NODE_ENV == "production") {
+                req.redirect('/error')
+            } else {
+                res.send("Error " + err);
+            }
         } else {
             res.json({ array: result.rows })
         }
@@ -134,18 +163,30 @@ router.get('/book/:id', (req, res) => {
 
     var ID = req.params.id;
     var getBookQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} where id ='${ID}'`;
-    pool.query(getBookQuery, (error, result) => {
-        if (error) {
-            res.send(error);
-        } else {
-            var book = result.rows[0];
-            if (book === undefined) {
-                book = null;
-            }
-            res.json(book)
-        }
-    })
+    if (req.session.user) {
+        if (req.session.user.admin) {
+            pool.query(getBookQuery, (error, result) => {
+                if (error) {
+                    if (process.env.NODE_ENV == "production") {
+                        req.redirect('/error')
+                    } else {
+                        res.send("Error " + err);
+                    }
+                } else {
+                    var book = result.rows[0];
+                    if (book === undefined) {
+                        book = null;
+                    }
+                    res.json(book)
 
+                }
+            })
+        } else {
+            res.redirect('/library')
+        }
+    } else {
+        res.redirect('/library')
+    }
 })
 
 module.exports = router;
