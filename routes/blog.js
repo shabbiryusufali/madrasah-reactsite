@@ -21,66 +21,6 @@ router.get('/', (req, res) => {
     })
 })
 
-// page to create a new article
-router.get('/new', (req, res) => {
-    if (req.session.user === undefined) {
-        req.session.user = null;
-    }
-    let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 3`;
-    pool.query(getArticlesQuery, (error, articles) => {
-        if (error) {
-            console.log(error);
-            res.send("Error " + error);
-        } else {
-            let article = {
-                "title": "",
-                "description": "",
-                "markdown": "",
-            }
-            if (req.session.user && req.session.user.admin) {
-                res.render('pages/articles/new.ejs', { pageTitle: "newarticle", user: req.session.user, article: article, footerArticles: articles.rows })
-            } else {
-                res.render('pages/unauthorized.ejs', { pageTitle: "unauthorized", user: req.session.user, article: article, footerArticles: articles.rows })
-            }
-        }
-    })
-})
-
-// page to edit an article
-router.get('/edit/:id', (req, res) => {
-    if (req.session.user === undefined) {
-        req.session.user = null;
-    }
-    let getFooterArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 3`;
-    pool.query(getFooterArticleQuery, (error, articles) => {
-        if (error) {
-            console.log(error);
-            res.send("Error " + error);
-        } else {
-            var ID = req.params.id;
-            var getArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} where id ='${ID}'`;
-            pool.query(getArticleQuery, (error, result) => {
-                if (error) {
-                    res.send(error);
-                } else {
-                    var article = result.rows[0];
-                    if (article === undefined) {
-                        article = null;
-                    }
-                    if (req.session.user && req.session.user.admin) {
-                        if (article == null) {
-                            res.render('pages/articles/show.ejs', { pageTitle: "articles", user: req.session.user, article: article, footerArticles: articles.rows });
-                        } else {
-                            res.render('pages/articles/edit.ejs', { pageTitle: "editarticle", user: req.session.user, article: article, footerArticles: articles.rows })
-                        }
-                    } else {
-                        res.render('pages/unauthorized.ejs', { pageTitle: "unauthorized", user: req.session.user, article: article, footerArticles: articles.rows })
-                    }
-                }
-            })
-        }
-    })
-})
 
 // need to check input
 // adding a new article to the blog

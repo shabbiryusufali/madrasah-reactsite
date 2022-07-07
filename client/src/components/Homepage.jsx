@@ -3,6 +3,25 @@ import { useState, useEffect } from "react";
 function Homepage() {
 
   var [posts, setPosts] = useState({ array: [] });
+  var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
+    
+  useEffect(
+    () => {
+        const f = async () => {
+            const data = await fetch(`/getActiveUser`)
+            console.log('a', data)
+            const jsonData = await data.json()
+            console.log('b', jsonData)
+            if(jsonData){   
+            console.log('c', user)
+                setUser(jsonData)
+                console.log('d', user)
+            } else{
+  
+            }
+        }
+        f();
+    }, [])
 
   useEffect(
     () => {
@@ -32,6 +51,7 @@ function Homepage() {
     article.dateComplete = `${postMonth}/${postDate}/${postYear} `
 
     article.link = `/articles/${article.id}`
+    article.editLink = `/articles/edit/${article.id}`
   })
 
 
@@ -53,8 +73,12 @@ function Homepage() {
                 <h1 className="text-2xl">{article.title}</h1>
                 <h3 className="text-sm">By {article.author} On {article.dateComplete}</h3>
                 <h2 className="text-xl pb-2">{article.description}</h2>
-                <a href={article.link} className='bg-transparent mx-1 hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded'>Read More</a>
-              </div>
+                <a href={article.link} className='bg-blue-500 mx-1 hover:bg-blue-900 text-white font-semibold  py-2 px-4 rounded'>Read More</a>
+                { user.admin ?
+                <a href={article.editLink} className='bg-blue-500 mx-1 hover:bg-blue-900 text-white font-semibold  py-2 px-4 rounded'>Edit</a>
+              : <></>  
+              }
+                </div>
             
             )})}
         </div>

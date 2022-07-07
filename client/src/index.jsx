@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 import Homepage from './components/Homepage';
 import Blog from './components/articles/Blog';
-import Library from './components/Library';
+import Library from './components/library/Library';
 import Information from './components/Information';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
@@ -18,6 +18,10 @@ import EditNull from './components/articles/EditNull';
 import UserList from './components/database/UserList';
 import User from './components/database/User';
 import LoggedOut from './components/LoggedOut';
+import AddBook from './components/library/AddBook';
+import LibraryDatabase from './components/library/LibraryDatabase';
+import CheckedOutDatabase from './components/library/CheckedOutDatabase';
+import BookDetails from './components/library/BookDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -32,6 +36,10 @@ root.render(
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/library" element={<Library />} />
+      <Route path="/library/:id" element={<BookDetails />} />
+      <Route path="/libraryDatabase" element={<LibraryDatabase />} />
+      <Route path="/libraryDatabase/checkedOut" element={<CheckedOutDatabase />} />
+      <Route path="/addBook" element={<AddBook />} />
       <Route path="/articles" element={<Blog />} />
       <Route path="/articles/new" element={<InsertPost />} />
       <Route path="/articles/edit/" element={<EditNull />} />

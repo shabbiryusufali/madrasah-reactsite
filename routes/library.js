@@ -14,34 +14,6 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/', (req, res) => {
-
-    try {
-        let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-        pool.query(getArticlesQuery, (error, articles) => {
-            if (error) {
-                console.log(error);
-                res.send("Error " + error);
-            } else {
-                if (req.session.user) {
-                    if (req.session.user.verified == true) {
-                        res.render('pages/library.ejs', { pageTitle: "library", user: req.session.user, footerArticles: articles.rows });
-                        // res.render('zoom_app/index.html');
-                    } else {
-                        res.render('pages/unauthorized.ejs', { pageTitle: "library", user: req.session.user, footerArticles: articles.rows });
-                    }
-                } else {
-                    res.render('pages/unauthorized.ejs', { pageTitle: "library", user: null, footerArticles: articles.rows })
-                }
-            }
-        })
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-
-})
 
 router.post('/addBook', urlencodedParser, async(req, res) => {
     try {
@@ -121,6 +93,59 @@ router.post('/checkoutBook', urlencodedParser, async(req, res) => {
         console.error(err);
         res.send("Error " + err);
     }
+})
+
+router.get('/books', (req, res) => {
+    if (req.session.user === undefined) {
+        req.session.user = null;
+    }
+
+    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} ORDER BY id DESC`;
+    pool.query(getBooksQuery, (error, result) => {
+        if (error) {
+            console.log(error);
+            res.send("Error " + error);
+        } else {
+            res.json({ array: result.rows })
+        }
+    })
+})
+
+router.get('/borrowedBooks', (req, res) => {
+    if (req.session.user === undefined) {
+        req.session.user = null;
+    }
+
+    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} WHERE userloanedto IS NOT NULL  ORDER BY id DESC`;
+    pool.query(getBooksQuery, (error, result) => {
+        if (error) {
+            console.log(error);
+            res.send("Error " + error);
+        } else {
+            res.json({ array: result.rows })
+        }
+    })
+})
+
+router.get('/book/:id', (req, res) => {
+    if (req.session.user === undefined) {
+        req.session.user = null;
+    }
+
+    var ID = req.params.id;
+    var getBookQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} where id ='${ID}'`;
+    pool.query(getBookQuery, (error, result) => {
+        if (error) {
+            res.send(error);
+        } else {
+            var book = result.rows[0];
+            if (book === undefined) {
+                book = null;
+            }
+            res.json(book)
+        }
+    })
+
 })
 
 module.exports = router;

@@ -51,15 +51,13 @@ function SignUp() {
             <br />
             <input type='password' name='passv2' id='passv2' className='rounded w-full px-2 py-1 ' />
             <br />
-            <h1>Mailing List?</h1>
+            <h1 className="text-white">Mailing List?</h1>
             <br />
             <label for='mailinglisttrue' className='text-white'>Yes</label>
-            <br />
-            <input type='radio' name='mailinglist' value='true' id='mailinglisttrue' className='rounded w-full px-2 py-1 ' />
+            <input type='radio' name='mailinglist' value='true' id='mailinglisttrue' className='rounded mx-2' />
             <br />
             <label for='mailinglistfalse' className='text-white'>No</label>
-            <br />
-            <input type='radio' name='mailinglist' value='false' id='mailinglistfalse' className='rounded w-full px-2 py-1 ' />
+            <input type='radio' name='mailinglist' value='false' id='mailinglistfalse' className='rounded mx-2' />
             <br />
             <br />
             <input type='submit' value='Submit' className='rounded bg-blue-500 hover:bg-blue-900 text-white px-4 py-2' />

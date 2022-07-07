@@ -122,7 +122,7 @@ router.delete('/:id', (req, res) => {
         if (error) {
             res.send(error);
         } else {
-            console.log('Post', ID, 'was deleted')
+            console.log('User', ID, 'was deleted')
             res.redirect('/');
         }
     })
