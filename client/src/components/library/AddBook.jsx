@@ -6,13 +6,9 @@ function AddBook() {
         () => {
             const f = async () => {
                 const data = await fetch(`/getActiveUser`)
-                console.log('a', data)
                 const jsonData = await data.json()
-                console.log('b', jsonData)
                 if (jsonData) {
-                    console.log('c', user)
                     setUser(jsonData)
-                    console.log('d', user)
                 } else {
 
                 }

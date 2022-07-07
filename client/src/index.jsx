@@ -22,6 +22,9 @@ import AddBook from './components/library/AddBook';
 import LibraryDatabase from './components/library/LibraryDatabase';
 import CheckedOutDatabase from './components/library/CheckedOutDatabase';
 import BookDetails from './components/library/BookDetails';
+import Unauthorized from './components/Unauthorized';
+import NotFound from './components/NotFound';
+import UnknownError from './components/UnknownError';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -56,6 +59,11 @@ root.render(
       <Route path="/dashboard/:status" element={<Dashboard />} />
       <Route path="/database" element={<UserList />} />
       <Route path="/database/:id" element={<User />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/error" element={<UnknownError />} />
+      <Route path='/*'>
+          <Route path=":getQuery" element={<NotFound />} />
+        </Route>
     </Routes>
   </BrowserRouter>
   </div>

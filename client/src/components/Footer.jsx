@@ -8,12 +8,8 @@ function Footer() {
     () => {
         const f = async () => {
             const data = await fetch(`/getFooterArticles`)
-            console.log('a',data)
             const jsonData = await data.json()
-            console.log('b', jsonData)
-            console.log('c', articles)
             setArticles(jsonData)
-            console.log('d', jsonData)
         }
         f();
     }, {array:[]})

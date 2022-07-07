@@ -7,13 +7,9 @@ function UserList() {
     () => {
         const f = async () => {
             const data = await fetch(`/databaseFunctions`)
-            console.log('a',data)
             const jsonData = await data.json()
-            console.log('b', jsonData)
-            console.log('c', users)
             setUsers(jsonData)
             .then(window.location.reload())
-            console.log('d', jsonData)
         }
         f();
     }, [])
