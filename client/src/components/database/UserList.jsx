@@ -2,22 +2,37 @@ import { useState, useEffect } from "react";
 
 function UserList() {
   var [users, setUsers] = useState({results:[]});
-  
+  var [usersFiltered, setUsersFiltered] = useState([]);
   useEffect(
     () => {
         const f = async () => {
             const data = await fetch(`/databaseFunctions`)
             const jsonData = await data.json()
             setUsers(jsonData)
-            .then(window.location.reload())
+            setUsersFiltered(jsonData.results)
+            
         }
         f();
     }, [])
 
 
-    users.results.forEach(user =>{    
+    usersFiltered.forEach(user =>{    
       user.link = `/database/${user.id}`
     })
+
+    const filterText = e => {
+      var value = e.target.value
+      setUsersFiltered(
+        users.results.filter(item => {
+        console.log(item)
+        console.log(value)
+        console.log(item.user_name.includes(value))
+        if(item.user_name.includes(value)){
+          return true
+        } else { return false }
+      }))
+    }
+
 
   return (
     <div className="blog p-2">
@@ -25,6 +40,10 @@ function UserList() {
       <h1 className="text-center text-6xl">List of Users</h1>
       <br />
       <br />
+      <h2 className="text-white">Filter by username</h2>
+      <input type='text' name='filterText' id='filterText' onChange={filterText} className='rounded w-full'/>
+    <br />
+    <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -36,9 +55,9 @@ function UserList() {
           </tr>
         </thead>
         <tbody>
-      {users.results.map(user => {
+      {usersFiltered.map(user => {
         return(
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th scope="row" className="px-6 py-4">{user.id}</th>
         <td className="px-6 py-4">{user.user_name}</td>
           <td scope='row' className="px-6 py-4">
