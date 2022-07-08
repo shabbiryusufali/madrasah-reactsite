@@ -24,10 +24,39 @@ function UserList() {
       var value = e.target.value
       setUsersFiltered(
         users.results.filter(item => {
-        console.log(item)
-        console.log(value)
-        console.log(item.user_name.includes(value))
-        if(item.user_name.includes(value)){
+        if(item.user_name.toLowerCase().includes(value.toLowerCase())){
+          return true
+        } else { return false }
+      }))
+    }
+
+    
+    const filterByFirstname = e => {
+      var value = e.target.value
+      setUsersFiltered(
+        users.results.filter(item => {
+        if(item.fname.toLowerCase().includes(value.toLowerCase())){
+          return true
+        } else { return false }
+      }))
+    }
+    
+    const filterByLastname = e => {
+      var value = e.target.value
+      setUsersFiltered(
+        users.results.filter(item => {
+        if(item.lname.toLowerCase().includes(value.toLowerCase())){
+          return true
+        } else { return false }
+      }))
+    }
+
+    
+    const filterByID = e => {
+      var value = e.target.value
+      setUsersFiltered(
+        users.results.filter(item => {
+        if(item.id == value){
           return true
         } else { return false }
       }))
@@ -40,8 +69,14 @@ function UserList() {
       <h1 className="text-center text-6xl">List of Users</h1>
       <br />
       <br />
-      <h2 className="text-white">Filter by username</h2>
+      <h2 className="text-white">Filter by ID</h2>
+      <input type='number' name='filterText' id='filterText' onChange={filterByID} className='rounded w-full'/>
+      <h2 className="text-white">Filter by Username</h2>
       <input type='text' name='filterText' id='filterText' onChange={filterByUsername} className='rounded w-full'/>
+      <h2 className="text-white">Filter by First Name</h2>
+      <input type='text' name='filterText' id='filterText' onChange={filterByFirstname} className='rounded w-full'/>
+      <h2 className="text-white">Filter by Last Name</h2>
+      <input type='text' name='filterLast' id='filterLast' onChange={filterByLastname} className='rounded w-full'/>
     <br />
     <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

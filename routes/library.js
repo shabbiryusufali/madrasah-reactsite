@@ -21,17 +21,16 @@ router.post('/addBook', urlencodedParser, async(req, res) => {
                 var bookID = req.body.newBookID;
                 var bookTitle = req.body.newBookTitle;
                 var bookGrade = req.body.newBookGrade;
-                let insertQuery = `INSERT INTO ${process.env.PG_LIBRARY_TABLE}(id,title,gradelevel) VALUES (${bookID}, '${bookTitle}', ${bookGrade});`;
+                let insertQuery = `INSERT INTO ${process.env.PG_LIBRARY_TABLE} (id,title,gradelevel, userloanedto) VALUES (${bookID}, '${bookTitle}', ${bookGrade}, '');`;
 
                 const client = await pool.connect();
                 const result = await client.query(insertQuery);
-                results = { 'results': (result) ? result.rows : null };
+                client.release();
             }
         }
         res.redirect('/library');
 
 
-        client.release();
 
     } catch (err) {
         console.error(err);

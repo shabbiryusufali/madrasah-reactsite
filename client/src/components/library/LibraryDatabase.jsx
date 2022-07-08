@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function LibraryDatabase() {
   var [books, setBooks] = useState({ array: [] });
+  var [booksFiltered, setBooksFiltered] = useState([]);
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
 
   useEffect(
@@ -10,7 +11,7 @@ function LibraryDatabase() {
         const data = await fetch(`/libraryFunctions/borrowedBooks`)
         const jsonData = await data.json()
         setBooks(jsonData)
-          .then(window.location.reload())
+        setBooksFiltered(jsonData.array)
       }
       f();
     }, [])
@@ -31,11 +32,43 @@ function LibraryDatabase() {
     }, [])
 
 
-  books.array.forEach(book => {
+  booksFiltered.forEach(book => {
 
 
     book.link = `/library/${book.id}`
   })
+  
+
+  const filterByBookName = e => {
+    var value = e.target.value
+    setBooksFiltered(
+      books.array.filter(item => {
+      if(item.title.includes(value)){
+        return true
+      } else { return false }
+    }))
+  }
+  
+  const filterByBookID = e => {
+    var value = e.target.value
+    setBooksFiltered(
+      books.array.filter(item => {
+      if(item.id == value){
+        return true
+      } else { return false }
+    }))
+  }
+
+  const filterByBookGrade = e => {
+    var value = e.target.value
+    setBooksFiltered(
+      books.array.filter(item => {
+      if(item.gradelevel == value){
+        return true
+      } else { return false }
+    }))
+  }
+
 
   return (
     <div className="blog p-2">
@@ -49,6 +82,14 @@ function LibraryDatabase() {
           <br />
         </>
         : <></>}
+        <h2 className="text-white">Filter by Book ID</h2>
+        <input type='number' name='filterByBookID' id='filterByBookID' onChange={filterByBookID} className='rounded w-full' />
+        <h2 className="text-white">Filter by Book Title</h2>
+        <input type='text' name='filterByBookTitle' id='filterByBookTitle' onChange={filterByBookName} className='rounded w-full' />
+        <h2 className="text-white">Filter by Book Grade Level</h2>
+        <input type='number' name='filterByBookGrade' id='filterByBookGrade' onChange={filterByBookGrade} className='rounded w-full' />
+      <br />
+      <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -61,7 +102,7 @@ function LibraryDatabase() {
             </tr>
           </thead>
           <tbody>
-            {books.array.map(book => {
+            {booksFiltered.map(book => {
               return (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
@@ -69,8 +110,8 @@ function LibraryDatabase() {
                   </th>
                   <td className="px-6 py-4">{book.title}</td>
                   <td className="px-6 py-4">{book.gradelevel}</td>
-                  <td className="px-6 py-4">{book.userloanedto}</td>
-                  <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >Read More</a></td>
+                  <td className="px-6 py-4">{book.userloanedto ? book.userloanedto : <></>}</td>
+                  <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >More Information</a></td>
                 </tr>)
             })}
           </tbody>

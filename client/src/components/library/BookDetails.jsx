@@ -7,8 +7,7 @@ function BookDetails() {
   var [book, setBook] = useState({ id: null, title: "", gradelevel: null, userloanedto: "", userloanedtoid: null, date: "" });
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
 
-  let deleteButton = `/articleFunctions/${id}`
-  let editButton = `/articles/edit/${id}`
+  let deleteButton = `/libraryFunctions/${id}`
   useEffect(
     () => {
       const f = async () => {
@@ -85,7 +84,7 @@ function BookDetails() {
         {user.admin ?
           <>
             <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/')) }} className=' mx-1 hover:bg-red-900 text-white font-semibold py-2 px-4 bg-red-500 hover:border-transparent rounded'>DELETE</button>
-            <a href={editButton} className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>EDIT</a>
+            {/* <a href={editButton} className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>EDIT</a> */}
           </> : <></>}
 
         <a href='/articles' className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>BACK</a>

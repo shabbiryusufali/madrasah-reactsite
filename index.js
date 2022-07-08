@@ -752,7 +752,7 @@ app.get('/verifyAccount', async(req, res) => {
 
 app.get('/getActiveUser', (req, res) => {
     if (req.session.user) {
-        console.log(req.session.user)
+        // console.log(req.session.user)
         res.json(req.session.user)
     } else {
         res.json(null)
