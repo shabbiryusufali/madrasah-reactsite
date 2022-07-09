@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function Blog() {
   var [posts, setPosts] = useState({ array: [] });
+  var [postsFiltered, setPostsFiltered] = useState([]);
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
 
   useEffect(
@@ -10,6 +11,7 @@ function Blog() {
         const data = await fetch(`/articleFunctions`)
         const jsonData = await data.json()
         setPosts(jsonData)
+        setPostsFiltered(jsonData.array)
           .then(window.location.reload())
       }
       f();
@@ -46,6 +48,16 @@ function Blog() {
     article.link = `/articles/${article.id}`
   })
 
+  const filterPosts = e => {
+    var value = e.target.value
+    setPostsFiltered(
+      posts.array.filter(item => {
+      if(item.id == value || item.title.toLowerCase().includes(value.toLowerCase()) || item.author.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())){
+        return true
+      } else { return false }
+    }))
+  }
+  
   return (
     <div className="blog p-2">
       <br />
@@ -59,6 +71,10 @@ function Blog() {
           <br />
         </>
         : <></>}
+        <h2 className="text-white">Filter Posts</h2>
+        <input type='text' name='filterPosts' id='filterPosts' onChange={filterPosts} className='rounded w-full' />
+      <br />
+      <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -71,7 +87,7 @@ function Blog() {
             </tr>
           </thead>
           <tbody>
-            {posts.array.map(article => {
+            {postsFiltered.map(article => {
               return (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">

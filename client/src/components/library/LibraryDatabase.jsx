@@ -39,35 +39,16 @@ function LibraryDatabase() {
   })
   
 
-  const filterByBookName = e => {
+  const filterBooks = e => {
     var value = e.target.value
     setBooksFiltered(
       books.array.filter(item => {
-      if(item.title.includes(value)){
+      if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.gradelevel == value){
         return true
       } else { return false }
     }))
   }
   
-  const filterByBookID = e => {
-    var value = e.target.value
-    setBooksFiltered(
-      books.array.filter(item => {
-      if(item.id == value){
-        return true
-      } else { return false }
-    }))
-  }
-
-  const filterByBookGrade = e => {
-    var value = e.target.value
-    setBooksFiltered(
-      books.array.filter(item => {
-      if(item.gradelevel == value){
-        return true
-      } else { return false }
-    }))
-  }
 
 
   return (
@@ -82,12 +63,8 @@ function LibraryDatabase() {
           <br />
         </>
         : <></>}
-        <h2 className="text-white">Filter by Book ID</h2>
-        <input type='number' name='filterByBookID' id='filterByBookID' onChange={filterByBookID} className='rounded w-full' />
-        <h2 className="text-white">Filter by Book Title</h2>
-        <input type='text' name='filterByBookTitle' id='filterByBookTitle' onChange={filterByBookName} className='rounded w-full' />
-        <h2 className="text-white">Filter by Book Grade Level</h2>
-        <input type='number' name='filterByBookGrade' id='filterByBookGrade' onChange={filterByBookGrade} className='rounded w-full' />
+        <h2 className="text-white">Filter Books</h2>
+        <input type='text' name='filterBooks' id='filterBooks' onChange={filterBooks} className='rounded w-full' />
       <br />
       <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

@@ -39,8 +39,8 @@ function User() {
             <div className="p-2">
                 <br />
                 <h1 className="text-center text-6xl">User: {user.id}</h1>
-                <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/')) }} className='bg-transparent  mx-1 hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>DELETE</button>
-                <a href='/database' className='bg-transparent  mx-1 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>BACK</a>
+                <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/')) }} className='mx-1 hover:bg-red-900 font-semibold text-white py-2 px-4  bg-red-500 rounded'>DELETE</button>
+                <a href='/database' className=' mx-1 hover:bg-blue-900 font-semibold text-white py-2 px-4  bg-blue-500  rounded'>BACK</a>
                 <div className="bg-white rounded p-3 my-5">
 
                     <h3 className="text-start text-2xl">Admin: {user.user_name}</h3>

@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 
 function CheckedOutDatabase() {
-  var [books, setBooks] = useState({array:[]});
+  
+  var [books, setBooks] = useState({ array: [] });
+  var [booksFiltered, setBooksFiltered] = useState([]);
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
-    
+
+
   useEffect(
     () => {
         const f = async () => {
             const data = await fetch(`/libraryFunctions/borrowedBooks`)
-            console.log('a',data)
             const jsonData = await data.json()
-            console.log('b', jsonData)
-            console.log('c', books)
             setBooks(jsonData)
-            .then(window.location.reload())
-            console.log('d', jsonData)
+            setBooksFiltered(jsonData.array)
         }
         f();
     }, [])
@@ -40,6 +39,16 @@ function CheckedOutDatabase() {
       book.link = `/library/${book.id}`
     })
 
+    const filterBooks = e => {
+      var value = e.target.value
+      setBooksFiltered(
+        books.array.filter(item => {
+        if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.gradelevel == value){
+          return true
+        } else { return false }
+      }))
+    }
+    
   return (
     <div className="blog p-2">
       <br />
@@ -52,6 +61,10 @@ function CheckedOutDatabase() {
       <br />
       </>
       : <></> }
+      <h2 className="text-white">Filter Books</h2>
+      <input type='text' name='filterBooks' id='filterBooks' onChange={filterBooks} className='rounded w-full' />
+    <br />
+    <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

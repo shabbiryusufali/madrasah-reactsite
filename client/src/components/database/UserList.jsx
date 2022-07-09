@@ -20,47 +20,17 @@ function UserList() {
       user.link = `/database/${user.id}`
     })
 
-    const filterByUsername = e => {
+    const filterUsers = e => {
       var value = e.target.value
       setUsersFiltered(
         users.results.filter(item => {
-        if(item.user_name.toLowerCase().includes(value.toLowerCase())){
+        if(item.user_name.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.fname.toLowerCase().includes(value.toLowerCase())
+        || item.lname.toLowerCase().includes(value.toLowerCase()) || item.id == value){
           return true
         } else { return false }
       }))
     }
 
-    
-    const filterByFirstname = e => {
-      var value = e.target.value
-      setUsersFiltered(
-        users.results.filter(item => {
-        if(item.fname.toLowerCase().includes(value.toLowerCase())){
-          return true
-        } else { return false }
-      }))
-    }
-    
-    const filterByLastname = e => {
-      var value = e.target.value
-      setUsersFiltered(
-        users.results.filter(item => {
-        if(item.lname.toLowerCase().includes(value.toLowerCase())){
-          return true
-        } else { return false }
-      }))
-    }
-
-    
-    const filterByID = e => {
-      var value = e.target.value
-      setUsersFiltered(
-        users.results.filter(item => {
-        if(item.id == value){
-          return true
-        } else { return false }
-      }))
-    }
 
 
   return (
@@ -69,14 +39,8 @@ function UserList() {
       <h1 className="text-center text-6xl">List of Users</h1>
       <br />
       <br />
-      <h2 className="text-white">Filter by ID</h2>
-      <input type='number' name='filterText' id='filterText' onChange={filterByID} className='rounded w-full'/>
-      <h2 className="text-white">Filter by Username</h2>
-      <input type='text' name='filterText' id='filterText' onChange={filterByUsername} className='rounded w-full'/>
-      <h2 className="text-white">Filter by First Name</h2>
-      <input type='text' name='filterText' id='filterText' onChange={filterByFirstname} className='rounded w-full'/>
-      <h2 className="text-white">Filter by Last Name</h2>
-      <input type='text' name='filterLast' id='filterLast' onChange={filterByLastname} className='rounded w-full'/>
+      <h2 className="text-white">Filter Users</h2>
+      <input type='text' name='filterUsers' id='filterUsers' onChange={filterUsers} className='rounded w-full'/>
     <br />
     <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
