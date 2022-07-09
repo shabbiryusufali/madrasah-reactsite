@@ -28,7 +28,7 @@ function User() {
                 setUser(jsonData)
             }
             f();
-        }, [])
+        }, [id])
 
 
     let navigate = useNavigate();

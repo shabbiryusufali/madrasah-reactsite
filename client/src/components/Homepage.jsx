@@ -4,7 +4,7 @@ function Homepage() {
 
   var [posts, setPosts] = useState({ array: [] });
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
-    
+  
   useEffect(
     () => {
         const f = async () => {
@@ -12,9 +12,7 @@ function Homepage() {
             const jsonData = await data.json()
             if(jsonData){   
                 setUser(jsonData)
-            } else{
-  
-            }
+            } 
         }
         f();
     }, [])
@@ -27,7 +25,7 @@ function Homepage() {
         setPosts(jsonData)
       }
       f();
-    }, { array: [] })
+    }, [])
 
 
   posts.array.forEach(article => {
@@ -54,14 +52,14 @@ function Homepage() {
       <br />
       <div className="md:flex">
         <div className="m-5 md:w-1/2">
-          <iframe src="https://calendar.google.com/calendar/embed?src=3r7s64pmr43cskec7m475vp7lo%40group.calendar.google.com&ctz=America%2FVancouver" width='100%' className="rounded" height="600" frameborder="0" scrolling="no"></iframe>
+          <iframe title="Madrasah Calendar" src="https://calendar.google.com/calendar/embed?src=3r7s64pmr43cskec7m475vp7lo%40group.calendar.google.com&ctz=America%2FVancouver" width='100%' className="rounded" height="600" frameBorder="0" scrolling="no"></iframe>
           <br />
           <br />
         </div>
         <div className="m-5 md:w-1/2 ">
           {posts.array.slice(0,4).map(article => {
             return(
-              <div className="bg-slate-700 p-3 m-2 rounded">
+              <div className="bg-slate-700 p-3 m-2 rounded" key={article.id}>
                 <h1 className="text-2xl">{article.title}</h1>
                 <h3 className="text-sm">By {article.author} On {article.dateComplete}</h3>
                 <h2 className="text-xl pb-2">{article.description}</h2>

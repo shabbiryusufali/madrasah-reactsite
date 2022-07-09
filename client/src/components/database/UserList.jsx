@@ -24,8 +24,8 @@ function UserList() {
       var value = e.target.value
       setUsersFiltered(
         users.results.filter(item => {
-        if(item.user_name.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.fname.toLowerCase().includes(value.toLowerCase())
-        || item.lname.toLowerCase().includes(value.toLowerCase()) || item.id == value){
+        if(item.user_name.toLowerCase().includes(value.toLowerCase()) || item.id === parseInt(value) || item.fname.toLowerCase().includes(value.toLowerCase())
+        || item.lname.toLowerCase().includes(value.toLowerCase()) || item.id === parseInt(value)){
           return true
         } else { return false }
       }))
@@ -59,7 +59,7 @@ function UserList() {
         <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th scope="row" className="px-6 py-4">{user.id}</th>
         <td className="px-6 py-4">{user.user_name}</td>
-          <td scope='row' className="px-6 py-4">
+          <td  className="px-6 py-4">
           {user.fname} {user.lname}
           </td>
           <td className="text-gray-500 px-6 py-4"><a href={user.link} key={user.id} >Read More</a></td>

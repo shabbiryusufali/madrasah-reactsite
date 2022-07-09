@@ -52,7 +52,8 @@ function Blog() {
     var value = e.target.value
     setPostsFiltered(
       posts.array.filter(item => {
-      if(item.id == value || item.title.toLowerCase().includes(value.toLowerCase()) || item.author.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())){
+      if(item.id === parseInt(value) || item.title.toLowerCase().includes(value.toLowerCase()) || 
+      item.author.toLowerCase().includes(value.toLowerCase()) || item.description.toLowerCase().includes(value.toLowerCase())){
         return true
       } else { return false }
     }))

@@ -35,7 +35,7 @@ function Header() {
             type="button"
             onClick={() => setNavbarOpen(!navbarOpen)}
           >
-            <img src='../menu.png' />
+            <img src='../menu.png' alt='Burger Menu Button' />
           </button>
         </div>
         <div

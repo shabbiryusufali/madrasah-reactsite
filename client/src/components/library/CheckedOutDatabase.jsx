@@ -43,7 +43,7 @@ function CheckedOutDatabase() {
       var value = e.target.value
       setBooksFiltered(
         books.array.filter(item => {
-        if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.gradelevel == value){
+        if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id === parseInt(value) || item.gradelevel === parseInt(value)){
           return true
         } else { return false }
       }))
@@ -77,7 +77,7 @@ function CheckedOutDatabase() {
           </tr>
         </thead>
         <tbody>
-        {books.array.map(book => {
+        {booksFiltered.map(book => {
         return(
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">

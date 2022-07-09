@@ -43,7 +43,8 @@ function LibraryDatabase() {
     var value = e.target.value
     setBooksFiltered(
       books.array.filter(item => {
-      if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id == value || item.gradelevel == value){
+      if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id === parseInt(value)
+       || item.gradelevel === parseInt(value)){
         return true
       } else { return false }
     }))
