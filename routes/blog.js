@@ -13,11 +13,11 @@ router.get('/', (req, res) => {
     let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC`;
     pool.query(getArticlesQuery, (error, result) => {
         if (error) {
-            console.log(err);
+            console.log(error);
             if (process.env.NODE_ENV == "production") {
                 res.redirect('/error')
             } else {
-                res.send("Error " + err);
+                res.send("Error " + error);
             }
         } else {
             res.json({ array: result.rows })
@@ -62,11 +62,11 @@ router.get('/:id', (req, res) => {
     var getArticleQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} where id ='${ID}'`;
     pool.query(getArticleQuery, (error, result) => {
         if (error) {
-            console.log(err);
+            console.log(error);
             if (process.env.NODE_ENV == "production") {
                 res.redirect('/error')
             } else {
-                res.send("Error " + err);
+                res.send("Error " + error);
             }
         } else {
             var article = result.rows[0];
@@ -85,11 +85,11 @@ router.delete('/:id', (req, res) => {
     var deleteArticleQuery = `DELETE FROM ${process.env.PG_BLOG_TABLE} where id ='${ID}'`;
     pool.query(deleteArticleQuery, (error, result) => {
         if (error) {
-            console.log(err);
+            console.log(error);
             if (process.env.NODE_ENV == "production") {
                 res.redirect('/error')
             } else {
-                res.send("Error " + err);
+                res.send("Error " + error);
             }
         } else {
             console.log('Post', ID, 'was deleted')
