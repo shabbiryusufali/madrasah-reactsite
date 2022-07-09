@@ -94,13 +94,12 @@ function Header() {
               :
               <>
                 <li className="nav-item">
-                  <button onClick={async () => { await fetch('/logoutAction', { method: 'GET' }).then(window.location.reload(false)) }} className='bg-transparent my-1 lg:mx-1  mx-3 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>Logout</button>
-
-                </li>
-                <li className="nav-item">
                   <form action="/dashboard">
                     <input type='submit' value='Dashboard' className='cursor-pointer bg-transparent my-1  lg:mx-1 mx-3 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded' />
                   </form>
+                </li>
+                <li className="nav-item">
+                  <button onClick={async () => { await fetch('/logoutAction', { method: 'GET' }).then(window.location.reload(false)) }} className='bg-transparent my-1 lg:mx-1  mx-3 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>Logout</button>
                 </li>
               </>
             }
