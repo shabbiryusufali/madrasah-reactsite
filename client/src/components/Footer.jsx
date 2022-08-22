@@ -41,7 +41,7 @@ function Footer() {
                                     Tilawat ud Dua
                                 </td>
                                 <td>
-                                    09:30am - 10:0am
+                                    09:30am - 10:00am
                                 </td>
                             </tr>
                             <tr className="row">
