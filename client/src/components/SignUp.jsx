@@ -7,13 +7,13 @@ function SignUp() {
   let errorInfo = ""
 
   if(error){
-    if(error == "none"){
+    if(error === "none"){
       errorInfo = "There is no error"
     }
-    if(error == "unmatchpassword"){
+    if(error === "unmatchpassword"){
       errorInfo = "Those passwords do not match"
     }
-    if(error == "userexists"){
+    if(error === "userexists"){
       errorInfo = "That email or username is taken"
     }
   }

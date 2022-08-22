@@ -715,8 +715,8 @@ app.get('/verifyAccount', async(req, res) => {
         var random1 = req.query.one;
         var random2 = req.query.two;
         var random3 = req.query.three;
-        var searchQuery = `SELECT * FROM ${PG_DB_TABLE} WHERE random1 = '${random1}'`
-        var verifyQuery = `UPDATE ${PG_DB_TABLE} SET verified = true WHERE random1 = '${random1}'`
+        var searchQuery = `SELECT * FROM ${process.env.PG_DB_TABLE} WHERE random1 = '${random1}'`
+        var verifyQuery = `UPDATE ${process.env.PG_DB_TABLE} SET verified = true WHERE random1 = '${random1}'`
         const result = await client.query(searchQuery);
         const results = { 'results': (result) ? result.rows : null };
         var check1 = false;
@@ -834,4 +834,54 @@ app.get('*', (req, res) => {
 module.exports = app;
 
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+app.listen(PORT, () => {
+    const createQuery1 = `CREATE TABLE IF NOT EXISTS ${process.env.PG_DB_TABLE} (
+         id BIGINT NOT NULL,
+         user_name TEXT NOT NULL, 
+         pass TEXT NOT NULL, 
+         email TEXT NOT NULL, 
+         admin BOOLEAN NOT NULL, 
+         verified BOOLEAN NOT NULL, 
+         fname TEXT NOT NULL, 
+         lname TEXT NOT NULL, 
+         random1 TEXT,
+         random2 TEXT,
+         random3 TEXT,
+         mailinglist boolean NOT NULL,
+         teacher BOOLEAN NOT NULL,
+         student BOOLEAN NOT NULL,
+         alumn BOOLEAN NOT NULL,
+         librarian BOOLEAN NOT NULL);`
+    const createQuery2 = `CREATE TABLE IF NOT EXISTS ${process.env.PG_BLOG_TABLE} (
+        id SERIAL,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        markdown TEXT NOT NULL,
+        date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        author TEXT
+    )`
+    const createQuery3 = `CREATE TABLE IF NOT EXISTS ${process.env.PG_LIBRARY_TABLE} (
+        id BIGINT NOT NULL,
+        title TEXT NOT NULL,
+        gradelevel INTEGER NOT NULL,
+        userloanedto TEXT,
+        userloanedtoid BIGINT,
+        date DATE DEFAULT CURRENT_TIMESTAMP
+    )`
+    pool.query(createQuery1, (err, result) => {
+        if(err){
+            res.send(err)
+        }
+    })
+    pool.query(createQuery2, (err, result) => {
+        if(err){
+            res.send(err)
+        }
+    })
+    pool.query(createQuery3, (err, result) => {
+        if(err){
+            res.send(err)
+        }
+    })
+    console.log(`Listening on ${ PORT }`)
+});
