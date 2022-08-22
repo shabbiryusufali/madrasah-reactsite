@@ -623,7 +623,7 @@ app.post('/login_action', urlencodedParser, async(req, res) => {
 
 app.post('/signup_action', urlencodedParser, async(req, res) => {
 
-
+    let id = req.body.id
     let un = req.body.uname;
     let pw = req.body.pass;
     let pwv2 = req.body.passv2;
@@ -642,8 +642,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
             const result = await client.query(allUserQuery);
             var results = { 'results': (result) ? result.rows : null };
             var userPasswordQuery = `SELECT * FROM ${process.env.PG_DB_TABLE} WHERE user_name='${un}';`;
-            let x = 1;
-            let doQuery = true;
 
             for (let i = 0; i < results.results.length; i++) {
                 console.log(results.results);
@@ -675,7 +673,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                 let random1 = randomstring.generate();
                 let random2 = randomstring.generate();
                 let random3 = randomstring.generate();
-                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${x},'${un}','${passwordToStore}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false);`;
+                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${id},'${un}','${passwordToStore}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false);`;
                 const insert = await client.query(insertQuery);
                 const result2 = await client.query(userPasswordQuery);
                 var results2 = { 'results': (result2) ? result2.rows : null };

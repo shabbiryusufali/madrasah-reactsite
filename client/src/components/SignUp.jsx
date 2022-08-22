@@ -28,6 +28,10 @@ function SignUp() {
             <br />
             <br />
             {error ? <p className="text-red-600">{errorInfo}</p> : <></>}
+            <label for='fname' className='text-white'>ITS ID:</label>
+            <br />
+            <input type='number' name='id' id='id' className='rounded w-full px-2 py-1 ' />
+            <br />
             <label for='fname' className='text-white'>First Name:</label>
             <br />
             <input type='text' name='fname' id='fname' className='rounded w-full px-2 py-1 ' />
