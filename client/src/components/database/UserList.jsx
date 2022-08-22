@@ -3,6 +3,23 @@ import { useState, useEffect } from "react";
 function UserList() {
   var [users, setUsers] = useState({results:[]});
   var [usersFiltered, setUsersFiltered] = useState([]);
+  
+  var [activeUser, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
+  useEffect(
+    () => {
+      const f = async () => {
+        const data = await fetch(`/getActiveUser`)
+        const jsonData = await data.json()
+        if (jsonData) {
+          setUser(jsonData)
+        } else {
+
+        }
+      }
+      f();
+    }, [])
+
+
   useEffect(
     () => {
         const f = async () => {
@@ -37,7 +54,9 @@ function UserList() {
     <div className="blog p-2">
       <br />
       <h1 className="text-center text-6xl">List of Users</h1>
-      <br />
+      
+    {activeUser.admin ?
+      <><br />
       <br />
       <h2 className="text-white">Filter Users</h2>
       <input type='text' name='filterUsers' id='filterUsers' onChange={filterUsers} className='rounded w-full'/>
@@ -67,7 +86,8 @@ function UserList() {
       })}
       </tbody>
       </table>
-      </div>
+      </div></> : <p>Please login as an admin user to view this page</p>}
+      
     </div>
   );
 }
