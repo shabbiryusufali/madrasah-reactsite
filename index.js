@@ -335,7 +335,11 @@ app.post('/resetPassword/:ID', (req, res) => {
         if (req.session.user) {
             if (req.session.user.admin) {
                 var idToChange = req.params.ID;
-                var passChangeQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = "defaultPassword" WHERE id=${idToChange};`;
+                var salt = crypto.randomBytes(16).toString('hex')
+                var hashedPassword = crypto.createHash('sha256').update(`test${salt}`).digest('hex')
+                var saltedPassword = `${salt}:${hashedPassword}`
+                console.log(saltedPassword)
+                var passChangeQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = '${saltedPassword}' WHERE id=${idToChange};`;
                 pool.query(passChangeQuery);
                 res.redirect(`/database/${idToChange}`);
             } else {
