@@ -28,7 +28,7 @@ router.post('/addBook', urlencodedParser, async(req, res) => {
                 client.release();
             }
         }
-        res.redirect('/library');
+        res.redirect('/addBook');
 
 
 
@@ -56,7 +56,6 @@ router.post('/returnBook', urlencodedParser, async(req, res) => {
 
             }
         }
-        client.release();
 
     } catch (err) {
         console.error(err);
@@ -103,8 +102,6 @@ router.post('/checkoutBook', urlencodedParser, async(req, res) => {
         res.redirect('/library');
 
 
-        client.release();
-
     } catch (err) {
         console.error(err);
         if (process.env.NODE_ENV == "production") {
@@ -140,7 +137,7 @@ router.get('/borrowedBooks', (req, res) => {
         req.session.user = null;
     }
 
-    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} WHERE userloanedto IS NOT NULL  ORDER BY id DESC`;
+    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} WHERE userloanedto IS NOT NULL ORDER BY id DESC`;
     pool.query(getBooksQuery, (error, result) => {
         if (error) {
             console.log(error);
@@ -186,6 +183,20 @@ router.get('/book/:id', (req, res) => {
     } else {
         res.redirect('/library')
     }
+})
+
+router.delete('/:ID', (req,res) => {
+    var id = req.params.ID;
+    var deleteQuery = `DELETE FROM ${process.env.PG_LIBRARY_TABLE} WHERE id = $1`
+    pool.query(deleteQuery, [id], (error, result) => {
+        if(error){
+            res.send(error)
+        }
+        else{
+            res.redirect('/libraryDatabase')
+        }
+    })
+
 })
 
 module.exports = router;

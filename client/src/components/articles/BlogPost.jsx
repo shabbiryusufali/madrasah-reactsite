@@ -87,7 +87,7 @@ function BlogPost() {
         <h1 className="text-center text-6xl">Blog Post</h1>
         {user.admin ?
           <>
-            <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/')) }} className=' mx-1 hover:bg-red-900 text-white font-semibold py-2 px-4 bg-red-500 hover:border-transparent rounded'>DELETE</button>
+            <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/articles')) }} className=' mx-1 hover:bg-red-900 text-white font-semibold py-2 px-4 bg-red-500 hover:border-transparent rounded'>DELETE</button>
             <a href={editButton} className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>EDIT</a>
           </> : <></>}
 

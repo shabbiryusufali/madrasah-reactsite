@@ -83,11 +83,11 @@ function BookDetails() {
         <h1 className="text-center text-6xl">Book Details</h1>
         {user.admin ?
           <>
-            <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/')) }} className=' mx-1 hover:bg-red-900 text-white font-semibold py-2 px-4 bg-red-500 hover:border-transparent rounded'>DELETE</button>
+            <button onClick={async () => { await fetch(deleteButton, { method: 'DELETE' }).then(navigate('/libraryDatabase')) }} className=' mx-1 hover:bg-red-900 text-white font-semibold py-2 px-4 bg-red-500 hover:border-transparent rounded'>DELETE</button>
             {/* <a href={editButton} className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>EDIT</a> */}
           </> : <></>}
 
-        <a href='/articles' className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>BACK</a>
+        <a href='/libraryDatabase' className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>BACK</a>
         <div className="bg-white rounded p-3 my-5">
 
           <h3 className="text-start text-2xl">Book ID: {book.id}</h3>

@@ -18,7 +18,9 @@ router.get('/:ID', async(req, res) => {
                 const client = await pool.connect();
                 const result = await client.query(`SELECT * FROM ${process.env.PG_DB_TABLE} WHERE id = ${id} ORDER BY id ASC`);
                 const results = { 'results': (result) ? result.rows : null };
-                res.json(results.results[0])
+                var user = results.results[0]
+                delete user.pass 
+                res.json(user)
                 client.release();
             } else {
                 res.redirect('/unauthorized')

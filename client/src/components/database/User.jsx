@@ -6,7 +6,23 @@ function User() {
   var [user, setUser] = useState({
     id: null,
     user_name: "Null",
-    pass: "Null",
+    email: "Null",
+    admin: false,
+    verified: false,
+    fname: "Undefined",
+    lname: "User",
+    random1: "Null",
+    random2: "Null",
+    random3: "Null",
+    mailinglist: false,
+    teacher: false,
+    student: false,
+    alumn: false,
+  });
+
+  var [activeUser, setActiveUser] = useState({
+    id: null,
+    user_name: "Null",
     email: "Null",
     admin: false,
     verified: false,
@@ -45,6 +61,23 @@ function User() {
     f();
   }, [id]);
 
+
+
+  useEffect(
+    () => {
+      const f = async () => {
+        const data = await fetch(`/getActiveUser`)
+        const jsonData = await data.json()
+        if (jsonData) {
+          setActiveUser(jsonData)
+        } else {
+
+        }
+      }
+      f();
+    }, [])
+
+
   let navigate = useNavigate();
 
   function refreshPage() {
@@ -55,7 +88,8 @@ function User() {
     <div className="App">
       <div className="p-2">
         <br />
-        <h1 className="text-center text-6xl">User: {user.id}</h1>
+        <h1 className="text-center text-6xl">User: <span className="text-green-500">{user.id}</span></h1>
+        { activeUser.admin ? <>
         <button
           onClick={async () => {
             await fetch(deleteButton, { method: "DELETE" }).then(navigate("/"));
@@ -77,25 +111,25 @@ function User() {
           </h3>
           <h3 className="text-start text-2xl">Email: {user.email}</h3>
           <h3 className="text-start text-2xl">
-            Admin: {user.admin ? "True" : "False"}
+            Verified: {user.verified ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Verified: {user.verified ? "True" : "False"}
+            Admin: {user.admin ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Alumn: {user.alumn ? "True" : "False"}
+            Teacher: {user.teacher ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Student: {user.student ? "True" : "False"}
+            Student: {user.student ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Teacher: {user.teacher ? "True" : "False"}
+            Alumn: {user.alumn ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Librarian: {user.librarian ? "True" : "False"}
+            Librarian: {user.librarian ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <h3 className="text-start text-2xl">
-            Mailing List: {user.mailinglist ? "True" : "False"}
+            Mailing List: {user.mailinglist ? <span className="text-blue-500">True</span> : <span className="text-red-500">False</span>}
           </h3>
           <br />
           {!user.verified ? (
@@ -290,6 +324,7 @@ function User() {
 
           <br />
         </div>
+        </> : <p>Please login as admin to view user details</p>}
       </div>
     </div>
   );

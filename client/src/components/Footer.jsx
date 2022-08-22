@@ -40,7 +40,7 @@ function Footer() {
                                 <td className="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Tilawat ud Dua
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     09:30am - 10:00am
                                 </td>
                             </tr>
@@ -48,7 +48,7 @@ function Footer() {
                                 <td className="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 1
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     10:00am - 10:30am
                                 </td>
                             </tr>
@@ -56,7 +56,7 @@ function Footer() {
                                 <td className="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 2
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     10:30am - 11:00am
                                 </td>
                             </tr>
@@ -64,7 +64,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 3
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     11:15am - 11:30am
                                 </td>
                             </tr>
@@ -72,7 +72,7 @@ function Footer() {
                                 <td className="px-6 py-1 text-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Break
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     11:30am - 11:45am
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 4
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     11:45am - 12:15pm
                                 </td>
                             </tr>
@@ -88,7 +88,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 5
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     12:15pm - 12:45pm
                                 </td>
                             </tr>
@@ -96,7 +96,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Block 6
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     12:45pm - 1:30pm
                                 </td>
                             </tr>
@@ -104,7 +104,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Namaaz/Lunch
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     1:30pm - 2:30pm
                                 </td>
                             </tr>
@@ -112,7 +112,7 @@ function Footer() {
                                 <td className="px-6  text-center py-1 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     Tarbiyat Barnamaj
                                 </td>
-                                <td>
+                                <td className="font-mono">
                                     2:30pm - 3:00pm
                                 </td>
                             </tr>

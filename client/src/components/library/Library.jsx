@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LibraryDatabase from "./LibraryDatabase";
 function Library() {
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
   useEffect(
@@ -16,11 +17,11 @@ function Library() {
     }, [])
 
   return (
-    <div className="App">
-      <div className="p-2">
-        <h1 className="text-center text-6xl">Library</h1>
+      <div>
         {
           user.admin || user.teacher || user.librarian ?
+          <div className="p-2">
+          <h1 className="text-center text-6xl">Library</h1>
             <div>
               <a href="/addBook" className="rounded px-4 py-2 my-1 bg-blue-500 hover:bg-blue-900 text-white">Add a book to the system</a>
               <br />
@@ -55,12 +56,12 @@ function Library() {
                 <input type='submit' value='Check In Book' className='rounded bg-blue-500 hover:bg-blue-900 text-white px-4 py-2' />
               </form>
             </div>
+            </div>
             :
-            <div>This page is to Checkout and Checkin books. Please <a href="/login">login</a> as a teacher, librarian or admin to access this page</div>
+            <LibraryDatabase></LibraryDatabase>
         }
 
       </div>
-    </div>
   );
 }
 

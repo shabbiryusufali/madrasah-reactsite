@@ -8,7 +8,7 @@ function LibraryDatabase() {
   useEffect(
     () => {
       const f = async () => {
-        const data = await fetch(`/libraryFunctions/borrowedBooks`)
+        const data = await fetch(`/libraryFunctions/books`)
         const jsonData = await data.json()
         setBooks(jsonData)
         setBooksFiltered(jsonData.array)
@@ -58,12 +58,6 @@ function LibraryDatabase() {
       <h1 className="text-center text-6xl">List of Books</h1>
       <br />
       <br />
-      {user.admin ?
-        <>
-          <br />
-          <br />
-        </>
-        : <></>}
         <h2 className="text-white">Filter Books</h2>
         <input type='text' name='filterBooks' id='filterBooks' onChange={filterBooks} className='rounded w-full' />
       <br />
@@ -75,8 +69,8 @@ function LibraryDatabase() {
               <th scope="col" className="px-6 py-3">Book ID</th>
               <th scope="col" className="px-6 py-3">Book Title</th>
               <th scope="col" className="px-6 py-3">Book Grade Level</th>
-              <th scope="col" className="px-6 py-3">User Loaned To (If loaned)</th>
-              <th scope="col" className="px-6 py-3"></th>
+              <th scope="col" className="px-6 py-3">{user.admin | user.librarian | user.teacher ? "User Loaned To (If loaned)" : "Loaned?" }</th>
+              {user.admin | user.librarian | user.teacher ? <th scope="col" className="px-6 py-3"></th> : <></>}
             </tr>
           </thead>
           <tbody>
@@ -88,8 +82,8 @@ function LibraryDatabase() {
                   </th>
                   <td className="px-6 py-4">{book.title}</td>
                   <td className="px-6 py-4">{book.gradelevel}</td>
-                  <td className="px-6 py-4">{book.userloanedto ? book.userloanedto : <></>}</td>
-                  <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >More Information</a></td>
+                  <td className="px-6 py-4">{user.admin | user.librarian | user.teacher ? (book.userloanedto ? book.userloanedto : <></>) : (book.userloanedto ? "Yes" : "") }</td>
+                  {user.admin | user.librarian | user.teacher ? <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >More Information</a></td> : <></>}
                 </tr>)
             })}
           </tbody>
