@@ -12,6 +12,7 @@ const viewUserRouter = require('./routes/viewUser')
 const libraryRouter = require('./routes/library')
 const nodemailer = require('nodemailer');
 var cors = require('cors');
+const crypto = require('crypto');
 
 
 const app = express();
@@ -119,6 +120,54 @@ app.post('/adminUser/:ID', (req, res) => {
                 var adminQuery = `UPDATE ${process.env.PG_DB_TABLE} SET admin = true, verified = true WHERE id=${idToAdmin};`;
                 pool.query(adminQuery);
                 res.redirect(`/database/${idToAdmin}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
+    } catch (err) {
+        console.log(err);
+        if (process.env.NODE_ENV == "production") {
+            res.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
+    }
+
+})
+app.post('/librarianUser/:ID', (req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var librarianQuery = `UPDATE ${process.env.PG_DB_TABLE} SET librarian = true WHERE id=${idToAlter};`;
+                pool.query(librarianQuery);
+                res.redirect(`/database/${idToAlter}`);
+            } else {
+                res.redirect(`/unauthorized`);
+            }
+        } else {
+            res.redirect(`/unauthorized`);
+        }
+    } catch (err) {
+        console.log(err);
+        if (process.env.NODE_ENV == "production") {
+            res.redirect('/error')
+        } else {
+            res.send("Error " + err);
+        }
+    }
+
+})
+app.post('/delibrarianUser/:ID', (req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user.admin) {
+                var idToAlter = req.params.ID;
+                var delibrarianQuery = `UPDATE ${process.env.PG_DB_TABLE} SET librarian = false WHERE id=${idToAlter};`;
+                pool.query(delibrarianQuery);
+                res.redirect(`/database/${idToAlter}`);
             } else {
                 res.redirect(`/unauthorized`);
             }
@@ -531,14 +580,17 @@ app.post('/login_action', urlencodedParser, async(req, res) => {
         const client = await pool.connect();
         const result = await client.query(userPasswordQuery);
         const results = { 'row': (result) ? result.rows : null };
-        console.log("input: " + pw)
-        console.log("database: " + results.row[0].pass)
+        var passwordSplit = results.row[0].pass.split(':')
+        var salt = passwordSplit[0]
+        var passwordToCheck = crypto.createHash('sha256').update(`${pw}${salt}`).digest('hex')
+        console.log("input: " + passwordToCheck)
+        console.log("database: " + passwordSplit[1])
 
 
-        if (pw == results.row[0].pass) {
+        if (passwordToCheck == passwordSplit[1]) {
             console.log("match")
         }
-        if (pw == results.row[0].pass) {
+        if (passwordToCheck == passwordSplit[1]) {
             req.session.user = results.row[0];
             console.log(req.session.user)
             console.log(req.sessionID)
@@ -596,10 +648,18 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
             }
             if (doQuery) {
                 console.log(x);
+
+
+                var salt = crypto.randomBytes(16).toString('hex');
+                var hash = crypto.createHash('sha256').update(`${pw}${salt}`).digest('hex');
+                var passwordToStore = `${salt}:${hash}`
+                console.log(passwordToStore);
+
+
                 let random1 = randomstring.generate();
                 let random2 = randomstring.generate();
                 let random3 = randomstring.generate();
-                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${x},'${un}','${pw}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false);`;
+                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${x},'${un}','${passwordToStore}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false);`;
                 const insert = await client.query(insertQuery);
                 const result2 = await client.query(userPasswordQuery);
                 var results2 = { 'results': (result2) ? result2.rows : null };
@@ -681,8 +741,8 @@ app.get('/verifyAccount', async(req, res) => {
         var random1 = req.query.one;
         var random2 = req.query.two;
         var random3 = req.query.three;
-        var searchQuery = `SELECT * FROM user_test1 WHERE random1 = '${random1}'`
-        var verifyQuery = `UPDATE user_test1 SET verified = true WHERE random1 = '${random1}'`
+        var searchQuery = `SELECT * FROM ${PG_DB_TABLE} WHERE random1 = '${random1}'`
+        var verifyQuery = `UPDATE ${PG_DB_TABLE} SET verified = true WHERE random1 = '${random1}'`
         const result = await client.query(searchQuery);
         const results = { 'results': (result) ? result.rows : null };
         var check1 = false;

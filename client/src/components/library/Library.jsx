@@ -20,7 +20,7 @@ function Library() {
       <div className="p-2">
         <h1 className="text-center text-6xl">Library</h1>
         {
-          user.admin || user.teacher ?
+          user.admin || user.teacher || user.librarian ?
             <div>
               <a href="/addBook" className="rounded px-4 py-2 my-1 bg-blue-500 hover:bg-blue-900 text-white">Add a book to the system</a>
               <br />
@@ -56,7 +56,7 @@ function Library() {
               </form>
             </div>
             :
-            <div>This page is to Checkout and Checkin books. Please <a href="/login">login</a> as a teacher or admin to access this page</div>
+            <div>This page is to Checkout and Checkin books. Please <a href="/login">login</a> as a teacher, librarian or admin to access this page</div>
         }
 
       </div>

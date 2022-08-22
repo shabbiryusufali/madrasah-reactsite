@@ -25,7 +25,7 @@ function AddBook() {
                 <br />
                 <a href='/library' className='rounded px-4 py-2 bg-blue-500 hover:bg-blue-900 text-white'>Back</a>
 
-                {user.admin ?
+                {user.admin || user.librarian ?
                     <form method='post' action='/libraryFunctions/addBook'>
                         <br />
                         <label for='newBookID' className='text-white'>Book ID:</label>

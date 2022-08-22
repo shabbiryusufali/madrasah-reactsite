@@ -53,7 +53,7 @@ router.get('/search', async(req, res) => {
             if (req.session.user.admin == true) {
                 const client = await pool.connect();
                 var results;
-                if (columnToSearch == 'admin' || columnToSearch == 'verified' || columnToSearch == 'id' || columnToSearch == 'student' || columnToSearch == 'teacher' || columnToSearch == 'alumn') {
+                if (columnToSearch == 'admin' || columnToSearch == 'verified' ||  columnToSearch == 'librarian' || columnToSearch == 'id' || columnToSearch == 'student' || columnToSearch == 'teacher' || columnToSearch == 'alumn') {
                     const result = await client.query(`SELECT * FROM ${process.env.PG_DB_TABLE} WHERE ${columnToSearch} = ${searchQuery} ORDER BY id ASC`);
                     results = { 'results': (result) ? result.rows : null };
                 } else {

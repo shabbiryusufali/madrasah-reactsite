@@ -17,6 +17,8 @@ function User() {
     let unstudentButton = `/unstudentUser/${id}`
     let alumnButton = `/alumnUser/${id}`
     let unalumnButton = `/unalumnUser/${id}`
+    let librarianButton = `/librarianUser/${id}`
+    let delibrarianButton = `/delibrarianUser/${id}`
     let resetPasswordButton = `/resetPassword/${id}`
     let redirectLink = `/database/`
 
@@ -51,6 +53,7 @@ function User() {
                     <h3 className="text-start text-2xl">Alumn: {user.alumn ? "True" : "False"}</h3>
                     <h3 className="text-start text-2xl">Student: {user.student ? "True" : "False"}</h3>
                     <h3 className="text-start text-2xl">Teacher: {user.teacher ? "True" : "False"}</h3>
+                    <h3 className="text-start text-2xl">Librarian: {user.librarian ? "True" : "False"}</h3>
                     <h3 className="text-start text-2xl">Mailing List: {user.mailinglist ? "True" : "False"}</h3><br />
                     <button onClick={async () => { await fetch(verifyButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>VERIFY</button><br /><br />
                     <button onClick={async () => { await fetch(revokeVerifyButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>REVOKE VERIFICATION</button><br /><br />
@@ -61,6 +64,8 @@ function User() {
                     <button onClick={async () => { await fetch(unstudentButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>REMOVE STUDENT STATUS</button><br /><br />
                     <button onClick={async () => { await fetch(alumnButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>SET AS ALUMN</button><br /><br />
                     <button onClick={async () => { await fetch(unalumnButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>REMOVE ALUMN STATUS</button><br /><br />
+                    <button onClick={async () => { await fetch(librarianButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'>SET AS LIBRARIAN</button><br /><br />
+                    <button onClick={async () => { await fetch(delibrarianButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>REMOVE LIBRARIAN STATUS</button><br /><br />
                     <button onClick={async () => { await fetch(resetPasswordButton, { method: 'POST' }).then(navigate(redirectLink)) }} className='bg-transparent  hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded'>RESET PASSWORD</button><br /><br />
 
                     <br />
