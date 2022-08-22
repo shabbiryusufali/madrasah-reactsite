@@ -386,7 +386,7 @@ app.post('/changeFirstName', (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
+        res.redirect('/dashboard')
     }
 })
 app.post('/changeLastName', (req, res) => {
@@ -548,7 +548,7 @@ app.post('/changePassword', (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
+        res.redirect(`/dashboard`);
     }
 
 })
@@ -579,7 +579,7 @@ app.post('/editMailingList', (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.render('pages/dashboard.ejs', { pageTitle: "dashboard", user: req.session.user, action: "unknown" })
+        res.redirect(`/dashboard`);
     }
 
 })
@@ -737,11 +737,7 @@ app.get('/verifyAccount', async(req, res) => {
         if (check1 && check2 && check3) {
             await client.query(verifyQuery)
             if (req.session.user) {
-                res.render('pages/dashboard.ejs', {
-                    pageTitle: "dashboard",
-                    user: req.session.user,
-                    action: 'accountverified'
-                })
+                res.redirect(`/dashboard`);
             } else {
                 let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
                 pool.query(getArticlesQuery, (error, articles) => {
@@ -786,8 +782,10 @@ app.get('/verifyAccount', async(req, res) => {
 
 app.get('/getActiveUser', (req, res) => {
     if (req.session.user) {
-        // console.log(req.session.user)
-        res.json(req.session.user)
+        var currentUser = req.session.user;
+        delete currentUser.pass 
+
+        res.json(currentUser)
     } else {
         res.json(null)
     }
