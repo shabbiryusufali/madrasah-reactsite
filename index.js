@@ -512,13 +512,25 @@ app.post('/changePassword', (req, res) => {
             } else {
                 var idToChange = req.session.user.id;
                 var oldPass = req.body.oldpass;
+                
+                var passwordSplit = req.session.user.pass.split(':')
+                var salt = passwordSplit[0]
+                var passwordToCheck = crypto.createHash('sha256').update(`${oldPass}${salt}`).digest('hex')
+
                 var newPass = req.body.pass;
                 var newPass2 = req.body.passv2;
-                var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = '${newPass}' WHERE id=${idToChange};`;
+
+                
+                
+                var newPassHashed = crypto.createHash('sha256').update`${newPass}${salt}`
+                var newPassToStore = `${salt}:${newPassHashed}`
+
+                var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = '${newPassToStore}' WHERE id=${idToChange};`;
                 console.log(req.session.user.pass);
                 console.log(oldPass);
-                if (req.session.user.pass == oldPass) {
+                if (passwordSplit[1] == passwordToCheck) {
                     if (newPass == newPass2) {
+
                         pool.query(changePassQuery);
                         res.redirect(`/dashboard`);
                     } else {
