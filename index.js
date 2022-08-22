@@ -643,25 +643,6 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
             var results = { 'results': (result) ? result.rows : null };
             var userPasswordQuery = `SELECT * FROM ${process.env.PG_DB_TABLE} WHERE user_name='${un}';`;
 
-            for (let i = 0; i < results.results.length; i++) {
-                console.log(results.results);
-                let r = results.results[i];
-                if (r.email == email || r.user_name == un) {
-                    doQuery = false;
-                    break;
-                }
-            }
-            for (let i = 0; i < results.results.length; i++) {
-                console.log(results.results);
-                let r = results.results[i];
-                if (r.id != x) {
-                    break;
-                } else {
-                    x++;
-                }
-            }
-            if (doQuery) {
-                console.log(x);
 
 
                 var salt = crypto.randomBytes(16).toString('hex');
@@ -717,31 +698,10 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                     }
                 });
                 res.redirect("/dashboard/success")
-            } else {
-                let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-                pool.query(getArticlesQuery, (error, articles) => {
-                    if (error) {
-                        console.log(error);
-                        res.send("Error " + error);
-                    } else {
-                        res.redirect('/signup/userexists');
-                    }
-                })
-            }
+            
             client.release();
         } else {
-
-
-            let getArticlesQuery = `SELECT * FROM ${process.env.PG_BLOG_TABLE} ORDER BY date DESC LIMIT 5`;
-            pool.query(getArticlesQuery, (error, articles) => {
-                if (error) {
-                    console.log(error);
-                    res.send("Error " + error);
-                } else {
                     res.redirect('/signup/unmatchpassword')
-
-                }
-            })
         }
     } catch (err) {
         console.error(err);
