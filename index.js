@@ -654,7 +654,7 @@ app.post('/signup_action', urlencodedParser, async(req, res) => {
                 let random1 = randomstring.generate();
                 let random2 = randomstring.generate();
                 let random3 = randomstring.generate();
-                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${id},'${un}','${passwordToStore}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false, false);`;
+                var insertQuery = `INSERT INTO ${process.env.PG_DB_TABLE} VALUES (${id},'${un}','${passwordToStore}','${email}',false, false, '${fname}','${lname}', '${random1}', '${random2}', '${random3}', ${mailinglist}, false, false, false, false);`;
                 const insert = await client.query(insertQuery);
                 const result2 = await client.query(userPasswordQuery);
                 var results2 = { 'results': (result2) ? result2.rows : null };
@@ -838,18 +838,18 @@ app.listen(PORT, () => {
          user_name TEXT NOT NULL, 
          pass TEXT NOT NULL, 
          email TEXT NOT NULL, 
-         admin BOOLEAN NOT NULL, 
-         verified BOOLEAN NOT NULL, 
+         admin BOOLEAN NOT NULL DEFAULT false, 
+         verified BOOLEAN NOT NULL DEFAULT false, 
          fname TEXT NOT NULL, 
          lname TEXT NOT NULL, 
          random1 TEXT,
          random2 TEXT,
          random3 TEXT,
-         mailinglist boolean NOT NULL,
-         teacher BOOLEAN NOT NULL,
-         student BOOLEAN NOT NULL,
-         alumn BOOLEAN NOT NULL,
-         librarian BOOLEAN NOT NULL);`
+         mailinglist boolean NOT NULL DEFAULT false,
+         teacher BOOLEAN NOT NULL DEFAULT false,
+         student BOOLEAN NOT NULL DEFAULT false,
+         alumn BOOLEAN NOT NULL DEFAULT false,
+         librarian BOOLEAN NOT NULL DEFAULT false);`
     const createQuery2 = `CREATE TABLE IF NOT EXISTS ${process.env.PG_BLOG_TABLE} (
         id SERIAL,
         title TEXT NOT NULL,
