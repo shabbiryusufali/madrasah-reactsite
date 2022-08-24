@@ -881,5 +881,20 @@ app.listen(PORT, () => {
             res.send(err)
         }
     })
+    var updateQueryFullList = `SELECT id FROM ${process.env.PG_LIBRARY_TABLE} ORDER BY title ASC`
+    pool.query(updateQueryFullList, (error, result)=> {
+        if(error){
+            res.send(error)
+        } else{
+            for(var i = 0; i < 245; i++){
+                var updateQuery = `UPDATE ${process.env.PG_LIBRARY_TABLE} SET id = ${i + 100000000000} WHERE id = ${result.rows[i].id}`
+                pool.query(updateQuery, (error,result)=>{
+                    if(error){
+                        console.log(error)
+                    }
+                })
+            }
+        }
+    })
     console.log(`Listening on ${ PORT }`)
 });
