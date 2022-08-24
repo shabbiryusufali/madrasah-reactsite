@@ -117,7 +117,7 @@ router.get('/books', (req, res) => {
         req.session.user = null;
     }
 
-    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} ORDER BY id DESC`;
+    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} ORDER BY id ASC`;
     pool.query(getBooksQuery, (error, result) => {
         if (error) {
             console.log(error);
@@ -137,7 +137,7 @@ router.get('/borrowedBooks', (req, res) => {
         req.session.user = null;
     }
 
-    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} WHERE userloanedto IS NOT NULL ORDER BY id DESC`;
+    let getBooksQuery = `SELECT * FROM ${process.env.PG_LIBRARY_TABLE} WHERE userloanedto IS NOT NULL ORDER BY id ASC`;
     pool.query(getBooksQuery, (error, result) => {
         if (error) {
             console.log(error);
