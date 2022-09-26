@@ -526,12 +526,11 @@ app.post('/changePassword', (req, res) => {
 
                 
                 
-                var newPassHashed = crypto.createHash('sha256').update`${newPass}${salt}`
+                var newPassHashed = crypto.createHash('sha256').update(`${newPass}${salt}`)
                 var newPassToStore = `${salt}:${newPassHashed}`
 
                 var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = '${newPassToStore}' WHERE id=${idToChange};`;
-                console.log(req.session.user.pass);
-                console.log(oldPass);
+                
                 if (passwordSplit[1] == passwordToCheck) {
                     if (newPass == newPass2) {
 
@@ -782,7 +781,21 @@ app.get('/verifyAccount', async(req, res) => {
 
 app.get('/getActiveUser', (req, res) => {
     if (req.session.user) {
-        var currentUser = req.session.user;
+        var currentUser = 
+        {
+            id: req.session.user.id,
+            user_name: req.session.user.user_name,
+            email: req.session.user.email,
+            admin: req.session.user.admin,
+            verified: req.session.user.verified,
+            fname: req.session.user.fname,
+            lname: req.session.user.lname,
+            mailinglist: req.session.user.mailinglist,
+            teacher: req.session.user.teacher,
+            student: req.session.user.student,
+            alumn: req.session.user.alumn,
+            librarian: req.session.user.librarian
+        }
         delete currentUser.pass 
 
         res.json(currentUser)

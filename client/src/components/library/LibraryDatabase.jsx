@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function LibraryDatabase() {
-  var [books, setBooks] = useState({ array: [] });
+  var [books, setBooks] = useState([]);
   var [booksFiltered, setBooksFiltered] = useState([]);
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
 
@@ -10,7 +10,7 @@ function LibraryDatabase() {
       const f = async () => {
         const data = await fetch(`/libraryFunctions/books`)
         const jsonData = await data.json()
-        setBooks(jsonData)
+        setBooks(jsonData.array)
         setBooksFiltered(jsonData.array)
       }
       f();
@@ -33,8 +33,6 @@ function LibraryDatabase() {
 
 
   booksFiltered.forEach(book => {
-
-
     book.link = `/library/${book.id}`
   })
   
@@ -42,7 +40,7 @@ function LibraryDatabase() {
   const filterBooks = e => {
     var value = e.target.value
     setBooksFiltered(
-      books.array.filter(item => {
+      books.filter(item => {
       if(item.title.toLowerCase().includes(value.toLowerCase()) || item.userloanedto.toLowerCase().includes(value.toLowerCase()) || item.id === parseInt(value)
        || item.gradelevel === parseInt(value)){
         return true
