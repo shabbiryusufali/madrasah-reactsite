@@ -526,7 +526,7 @@ app.post('/changePassword', (req, res) => {
 
                 
                 
-                var newPassHashed = crypto.createHash('sha256').update(`${newPass}${salt}`)
+                var newPassHashed = crypto.createHash('sha256').update(`${newPass}${salt}`).digest('hex')
                 var newPassToStore = `${salt}:${newPassHashed}`
 
                 var changePassQuery = `UPDATE ${process.env.PG_DB_TABLE} SET pass = '${newPassToStore}' WHERE id=${idToChange};`;
@@ -597,8 +597,11 @@ app.post('/login_action', urlencodedParser, async(req, res) => {
         const results = { 'row': (result) ? result.rows : null };
         var passwordSplit = results.row[0].pass.split(':')
         var salt = passwordSplit[0]
+        console.log(results.row[0].pass)
         var passwordToCheck = crypto.createHash('sha256').update(`${pw}${salt}`).digest('hex')
         console.log("input: " + passwordToCheck)
+        console.log(passwordSplit[0])
+        console.log(passwordSplit[1])
         console.log("database: " + passwordSplit[1])
 
 
