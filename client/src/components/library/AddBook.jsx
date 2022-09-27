@@ -18,7 +18,7 @@ function AddBook() {
 
     return (
         <div className='App'>
-            <div className='p-2'>
+            <div className='p-2 sm:px-16'>
 
                 <h1 className='text-6xl text-center'>New Book</h1>
                 <br />

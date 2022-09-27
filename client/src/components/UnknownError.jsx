@@ -7,7 +7,7 @@ function UnknownError() {
 
     return (
         <div className="App">
-            <div className="p-2">
+            <div className="p-2 sm:px-16">
                 <h1 className="text-center text-6xl">ERROR</h1>
                 <p className="text-red-500">Error: an unknown error has occurred</p>
             </div>

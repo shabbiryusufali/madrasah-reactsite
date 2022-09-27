@@ -86,7 +86,7 @@ function User() {
 
   return (
     <div className="App">
-      <div className="p-2">
+      <div className="p-2 sm:px-16">
         <br />
         <h1 className="text-center text-6xl">User: <span className="text-green-500">{user.id}</span></h1>
         { activeUser.admin ? <>

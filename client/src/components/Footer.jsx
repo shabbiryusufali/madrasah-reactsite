@@ -37,7 +37,7 @@ function Footer() {
                     <table className="mx-auto text-sm text-left text-blue-300">
                         <tbody>
                             <tr className="row">
-                                <td className="px-6 py-1 text-center font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6 py-1 text-center font-medium  text-white whitespace-nowrap">
                                     Tilawat ud Dua
                                 </td>
                                 <td className="font-mono">
@@ -45,7 +45,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6 py-1 text-center font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6 py-1 text-center font-medium  text-white whitespace-nowrap">
                                     Block 1
                                 </td>
                                 <td className="font-mono">
@@ -53,7 +53,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6 py-1 text-center font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6 py-1 text-center font-medium  text-white whitespace-nowrap">
                                     Block 2
                                 </td>
                                 <td className="font-mono">
@@ -61,7 +61,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium text-white whitespace-nowrap">
                                     Block 3
                                 </td>
                                 <td className="font-mono">
@@ -69,7 +69,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6 py-1 text-center font-medium dark:text-white whitespace-nowrap">
+                                <td className="px-6 py-1 text-center font-medium text-white whitespace-nowrap">
                                     Break
                                 </td>
                                 <td className="font-mono">
@@ -77,7 +77,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium text-white whitespace-nowrap">
                                     Block 4
                                 </td>
                                 <td className="font-mono">
@@ -85,7 +85,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium  text-white whitespace-nowrap">
                                     Block 5
                                 </td>
                                 <td className="font-mono">
@@ -93,7 +93,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium  text-white whitespace-nowrap">
                                     Block 6
                                 </td>
                                 <td className="font-mono">
@@ -101,7 +101,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium  text-white whitespace-nowrap">
                                     Namaaz/Lunch
                                 </td>
                                 <td className="font-mono">
@@ -109,7 +109,7 @@ function Footer() {
                                 </td>
                             </tr>
                             <tr className="row">
-                                <td className="px-6  text-center py-1 font-medium  dark:text-white whitespace-nowrap">
+                                <td className="px-6  text-center py-1 font-medium  text-white whitespace-nowrap">
                                     Tarbiyat Barnamaj
                                 </td>
                                 <td className="font-mono">
@@ -125,7 +125,7 @@ function Footer() {
                         return (<p key={article.id} className="py-1"><i>{article.dateComplete}</i> - <a href={article.link} className='text-blue-300'>{article.title}</a></p>)
                     })}
                     <br />
-                    <a href="/articles" className="bg-transparent mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-black py-2 px-4 border border-blue-300 hover:border-transparent rounded">Read News</a>
+                    <a href="/articles" className="bg-transparent mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-white py-2 px-4 border border-blue-300 hover:border-transparent rounded">Read News</a>
                     <br />
                 </div>
                 <div className="text-center md:w-1/3 p-7">
@@ -134,7 +134,7 @@ function Footer() {
                         8430 128 St #15 <br />
                         Surrey, B.C.<br />
                         V3W 4G3, Canada<br /><br />
-                        <a href="tel:7782312152" className="bg-transparent  mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-black py-2 px-4 border border-blue-300 hover:border-transparent rounded">Call</a> | <a href="mailto:shabz2002786@gmail.com" className="bg-transparent  mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-black py-2 px-4 border border-blue-300 hover:border-transparent rounded">Email</a><br />
+                        <a href="tel:7782312152" className="bg-transparent  mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-white py-2 px-4 border border-blue-300 hover:border-transparent rounded">Call</a> | <a href="mailto:shabz2002786@gmail.com" className="bg-transparent  mx-1 hover:bg-blue-300 text-blue-300 font-semibold hover:text-white py-2 px-4 border border-blue-300 hover:border-transparent rounded">Email</a><br />
                     </address>
                     <div></div>
                 </div>

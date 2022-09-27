@@ -78,7 +78,7 @@ function BookDetails() {
 
   return (
     <div className="App">
-      <div className="p-2">
+      <div className="p-2 sm:px-16">
         <br />
         <h1 className="text-center text-6xl">Book Details</h1>
         {user.admin ?

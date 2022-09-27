@@ -20,7 +20,7 @@ function Library() {
       <div>
         {
           user.admin || user.teacher || user.librarian ?
-          <div className="p-2">
+          <div className="p-2 sm:px-16">
           <h1 className="text-center text-6xl">Library</h1>
             <div>
               <a href="/addBook" className="rounded px-4 py-2 my-1 bg-blue-500 hover:bg-blue-900 text-white">Add a book to the system</a>

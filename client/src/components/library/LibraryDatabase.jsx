@@ -51,7 +51,7 @@ function LibraryDatabase() {
 
 
   return (
-    <div className="blog p-2 sm:px-9">
+    <div className="blog p-2 sm:px-16">
       <br />
       <h1 className="text-center text-6xl">List of Books</h1>
       <br />
@@ -74,7 +74,7 @@ function LibraryDatabase() {
             {booksFiltered.map(book => {
               return (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
+                  <th scope='row' className="px-6 py-4 font-medium text-xl  text-white whitespace-nowrap">
                     {book.title}
                   </th>
                   <td className="px-6 py-4">{book.gradelevel}</td>

@@ -20,53 +20,51 @@ function SignUp() {
 
 
     return (
-      <div className="App">
-        <form method='post' action='/signup_action'>
-            <div className='p-2'>
-            <br />
+      <div className='p-2 sm:px-16'>
+        
+        <br />
             <h1 className='text-6xl text-center'>Sign Up</h1>
             <br />
             <br />
+        <form method='post' action='/signup_action'  className="mx-auto rounded w-1/4 pt-4 bg-slate-400 p-5">
+            <div>
             {error ? <p className="text-red-600">{errorInfo}</p> : <></>}
-            <label for='fname' className='text-white'>ITS ID:</label>
-            <br />
+            <label for='fname' className='font-bold text-white my-1'>ITS ID:</label>
             <input type='number' name='id' id='id' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='fname' className='text-white'>First Name:</label>
-            <br />
+            <label for='fname' className='font-bold text-white my-1'>First Name:</label>
             <input type='text' name='fname' id='fname' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='lname' className='text-white'>Last Name:</label>
-            <br />
+            <label for='lname' className='font-bold text-white my-1'>Last Name:</label>
             <input type='text' name='lname' id='lname' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='email' className='text-white'>Email Address:</label>
+            <label for='email' className='font-bold text-white my-1'>Email Address:</label>
             <input type='text' name='email' id='email' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='uname' className='text-white'>Username:</label>
-            <br />
+            <label for='uname' className='font-bold text-white my-1'>Username:</label>
             <input type='text' name='uname' id='uname' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='pass' className='text-white'>Password:</label>
-            <br />
+            <label for='pass' className='font-bold text-white my-1'>Password:</label>
             <input type='password' name='pass' id='pass' className='rounded w-full px-2 py-1 ' />
             <br />
-            <label for='passv2' className='text-white'>Confirm Password</label>
-            <br />
+            <label for='passv2' className='font-bold text-white my-1'>Confirm Password</label>
             <input type='password' name='passv2' id='passv2' className='rounded w-full px-2 py-1 ' />
             <br />
-            <h1 className="text-white">Mailing List?</h1>
+            <h1 className="font-bold text-white my-1">Mailing List?</h1>
             <br />
-            <label for='mailinglisttrue' className='text-white'>Yes</label>
+            <label for='mailinglisttrue' className='font-bold text-white my-1'>Yes</label>
             <input type='radio' name='mailinglist' value='true' id='mailinglisttrue' className='rounded mx-2' />
             <br />
-            <label for='mailinglistfalse' className='text-white'>No</label>
+            <label for='mailinglistfalse' className='font-bold text-white my-1'>No</label>
             <input type='radio' name='mailinglist' value='false' id='mailinglistfalse' className='rounded mx-2' />
             <br />
             <br />
             <input type='submit' value='Submit' className='rounded bg-blue-500 hover:bg-blue-900 text-white px-4 py-2' />
             </div>
         </form>    
+        <br />
+        <br />
+        <br />
       </div>
     );
   }

@@ -46,7 +46,7 @@ function Homepage() {
 
 
   return (
-    <div className="App">
+    <div className="">
       <br />
       <h1 className="text-center text-6xl">Homepage</h1>
       <br />
