@@ -82,8 +82,8 @@ function Blog() {
             <tr>
               <th scope="col" className="px-6 py-3">Post Name</th>
               <th scope="col" className="px-6 py-3">Post Description</th>
-              <th scope="col" className="px-6 py-3">Post Author</th>
-              <th scope="col" className="px-6 py-3">Post Date</th>
+              {/* <th scope="col" className="px-6 py-3">Post Author</th> */}
+              {/* <th scope="col" className="px-6 py-3">Post Date</th> */}
               <th scope="col" className="px-6 py-3"></th>
             </tr>
           </thead>
@@ -95,8 +95,8 @@ function Blog() {
                     {article.title}
                   </th>
                   <td className="px-6 py-4">{article.description}</td>
-                  <td className="px-6 py-4">{article.author}</td>
-                  <td className="px-6 py-4">{article.dateComplete}</td>
+                  {/* <td className="px-6 py-4">{article.author}</td> */}
+                  {/* <td className="px-6 py-4">{article.dateComplete}</td> */}
                   <td className="text-gray-500 px-6 py-4"><a href={article.link} key={article.id} >Read More</a></td>
                 </tr>)
             })}
