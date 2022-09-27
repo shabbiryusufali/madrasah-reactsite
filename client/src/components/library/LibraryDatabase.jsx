@@ -51,7 +51,7 @@ function LibraryDatabase() {
 
 
   return (
-    <div className="blog p-2">
+    <div className="blog p-2 sm:px-9">
       <br />
       <h1 className="text-center text-6xl">List of Books</h1>
       <br />
@@ -61,11 +61,10 @@ function LibraryDatabase() {
       <br />
       <br />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 sm:rounded-lg">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">Book ID</th>
-              <th scope="col" className="px-6 py-3">Book Title</th>
+              <th scope="row" className="px-6 py-3">Book Title</th>
               <th scope="col" className="px-6 py-3">Book Grade Level</th>
               <th scope="col" className="px-6 py-3">{user.admin | user.librarian | user.teacher ? "User Loaned To (If loaned)" : "Loaned?" }</th>
               {user.admin | user.librarian | user.teacher ? <th scope="col" className="px-6 py-3"></th> : <></>}
@@ -76,9 +75,8 @@ function LibraryDatabase() {
               return (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
-                    {book.id}
+                    {book.title}
                   </th>
-                  <td className="px-6 py-4">{book.title}</td>
                   <td className="px-6 py-4">{book.gradelevel}</td>
                   <td className="px-6 py-4">{user.admin | user.librarian | user.teacher ? (book.userloanedto ? book.userloanedto : <></>) : (book.userloanedto ? "Yes" : "") }</td>
                   {user.admin | user.librarian | user.teacher ? <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >More Information</a></td> : <></>}

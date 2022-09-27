@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function CheckedOutDatabase() {
   
-  var [books, setBooks] = useState([]);
+  var [books, setBooks] = useState({array: []});
   var [booksFiltered, setBooksFiltered] = useState([]);
   var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
 
@@ -12,7 +12,7 @@ function CheckedOutDatabase() {
         const f = async () => {
             const data = await fetch(`/libraryFunctions/borrowedBooks`)
             const jsonData = await data.json()
-            setBooks(jsonData.array)
+            setBooks(jsonData)
             setBooksFiltered(jsonData.array)
         }
         f();
@@ -35,7 +35,6 @@ function CheckedOutDatabase() {
 
 
     books.array.forEach(book =>{
-
       book.link = `/library/${book.id}`
     })
 
@@ -51,7 +50,7 @@ function CheckedOutDatabase() {
     }
     
   return (
-    <div className="blog p-2">
+    <div className="blog p-2 sm:px-9">
       <br />
       <h1 className="text-center text-6xl">List of Borrowed Books</h1>
       <br />
@@ -70,8 +69,8 @@ function CheckedOutDatabase() {
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-            <th scope="col" className="px-6 py-3">Book ID</th>
-            <th scope="col" className="px-6 py-3">Book Title</th>
+            {/* <th scope="col" className="px-6 py-3">Book ID</th> */}
+            <th scope="row" className="px-6 py-3">Book Title</th>
             <th scope="col" className="px-6 py-3">Book Grade Level</th>
             <th scope="col" className="px-6 py-3">User Loaned To (If loaned)</th>
             <th scope="col" className="px-6 py-3"></th>
@@ -82,9 +81,9 @@ function CheckedOutDatabase() {
         return(
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <th scope='row' className="px-6 py-4 font-medium text-xl text-gray-900 dark:text-white whitespace-nowrap">
-          {book.id}
+          {book.title}
           </th>
-          <td className="px-6 py-4">{book.title}</td>
+          {/* <td className="px-6 py-4">{book.title}</td> */}
           <td className="px-6 py-4">{book.gradelevel}</td>
           <td className="px-6 py-4">{book.userloanedto}</td>
           <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >Read More</a></td>
