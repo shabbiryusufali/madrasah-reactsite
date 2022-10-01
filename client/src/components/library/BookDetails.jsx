@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 
 function BookDetails() {
@@ -87,7 +87,7 @@ function BookDetails() {
             {/* <a href={editButton} className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>EDIT</a> */}
           </> : <></>}
 
-        <a href='/libraryDatabase' className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>BACK</a>
+        <Link to='/libraryDatabase' className='mx-1 hover:bg-blue-900 text-white font-semibold hover:text-white py-2 px-4 bg-blue-500 hover:border-transparent rounded'>BACK</Link>
         <div className="bg-white rounded p-3 my-5">
 
           <h3 className="text-start text-2xl">Book ID: {book.id}</h3>

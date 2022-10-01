@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function CheckedOutDatabase() {
   
@@ -86,7 +87,7 @@ function CheckedOutDatabase() {
           {/* <td className="px-6 py-4">{book.title}</td> */}
           <td className="px-6 py-4">{book.gradelevel}</td>
           <td className="px-6 py-4">{book.userloanedto}</td>
-          <td className="text-gray-500 px-6 py-4"><a href={book.link} key={book.id} >Read More</a></td>
+          <td className="text-gray-500 px-6 py-4"><Link to={book.link} key={book.id} >Read More</Link></td>
         </tr>)
       })}
       </tbody>

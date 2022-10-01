@@ -884,17 +884,17 @@ app.listen(PORT, () => {
     )`
     pool.query(createQuery1, (err, result) => {
         if(err){
-            res.send(err)
+            console.log(err)
         }
     })
     pool.query(createQuery2, (err, result) => {
-        if(err){
-            res.send(err)
+        if(err){            
+            console.log(err)
         }
     })
     pool.query(createQuery3, (err, result) => {
         if(err){
-            res.send(err)
+            console.log(err)
         }
     })
     // var updateQueryFullList = `SELECT id FROM ${process.env.PG_LIBRARY_TABLE} ORDER BY title ASC`

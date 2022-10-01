@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 function AddBook() {
 
     var [user, setUser] = useState({ id: 0, user_name: "Null", pass: "Null", email: "Null", admin: false, verified: false, fname: "Undefined", lname: "User", random1: "Null", random2: "Null", random3: "Null", mailinglist: false, teacher: false, student: false, alumn: false });
@@ -23,7 +24,7 @@ function AddBook() {
                 <h1 className='text-6xl text-center'>New Book</h1>
                 <br />
                 <br />
-                <a href='/library' className='rounded px-4 py-2 bg-blue-500 hover:bg-blue-900 text-white'>Back</a>
+                <Link to='/library' className='rounded px-4 py-2 bg-blue-500 hover:bg-blue-900 text-white'>Back</Link>
 
                 {user.admin || user.librarian ?
                     <form method='post' action='/libraryFunctions/addBook'>

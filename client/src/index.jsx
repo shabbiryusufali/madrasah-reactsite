@@ -5,7 +5,7 @@ import './index.css';
 import Homepage from './components/Homepage';
 import Blog from './components/articles/Blog';
 import Library from './components/library/Library';
-import Information from './components/Information';
+import Resources from './components/Resources';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -33,9 +33,9 @@ root.render(
   <React.StrictMode>
 
     <div className='h-screen flex flex-col bg-slate-600'>
+  <BrowserRouter>
     <Header />
     <div className='flex-grow bg-slate-600'>
-  <BrowserRouter>
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/library" element={<Library />} />
@@ -48,7 +48,7 @@ root.render(
       <Route path="/articles/edit/" element={<EditNull />} />
       <Route path="/articles/edit/:id" element={<EditPost />} />
       <Route path="/articles/:id" element={<BlogPost />} />
-      <Route path="/information" element={<Information />} />
+      <Route path="/resources" element={<Resources />} />
       <Route path="/signup/:error" element={<SignUp />} />
       <Route path="/signup/" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
@@ -65,9 +65,9 @@ root.render(
           <Route path=":getQuery" element={<NotFound />} />
         </Route>
     </Routes>
-  </BrowserRouter>
   </div>
     <Footer />
+  </BrowserRouter>
     </div>
   </React.StrictMode>
 );
